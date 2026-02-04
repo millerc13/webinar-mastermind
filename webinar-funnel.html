@@ -2069,7 +2069,7 @@
 
                 if (result.success) {
                     // Redirect to thank you page
-                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}&email=${encodeURIComponent(formData.email)}`;
+                    window.location.href = `/thank-you?firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}&email=${encodeURIComponent(formData.email)}`;
                 } else {
                     throw new Error(result.error || 'Registration failed');
                 }
