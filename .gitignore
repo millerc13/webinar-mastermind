@@ -14,3 +14,4 @@ node_modules/
 
 # Debug logs
 npm-debug.log*
+.env.vercel
