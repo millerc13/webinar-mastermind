@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { firstName, lastName, email, phone } = req.body;
+    const { firstName, lastName, email, phone, webinarDate } = req.body;
 
     // Validate required fields
     if (!email) {
@@ -35,6 +35,11 @@ export default async function handler(req, res) {
       'webinar-registered',
       'sms-consent'
     ];
+
+    // Add date-specific tag if provided
+    if (webinarDate) {
+      tags.push(`webinar-${webinarDate}`);
+    }
 
     // Create/update contact in GHL
     const ghlResponse = await fetch('https://services.leadconnectorhq.com/contacts/', {
@@ -68,41 +73,30 @@ export default async function handler(req, res) {
       );
 
       if (isDuplicate) {
-        // Try to update existing contact with tags
-        const searchResponse = await fetch(
-          `https://services.leadconnectorhq.com/contacts/search/duplicate?locationId=${process.env.GHL_LOCATION_ID}&email=${encodeURIComponent(email)}`,
-          {
+        // Get contact ID from the duplicate error response
+        const existingContactId = result.meta?.contactId;
+
+        if (existingContactId) {
+          // Update existing contact with new tags
+          await fetch(`https://services.leadconnectorhq.com/contacts/${existingContactId}`, {
+            method: 'PUT',
             headers: {
               'Authorization': `Bearer ${process.env.GHL_API_KEY}`,
+              'Content-Type': 'application/json',
               'Version': '2021-07-28',
             },
-          }
-        );
-
-        if (searchResponse.ok) {
-          const searchResult = await searchResponse.json();
-          const existingContactId = searchResult.contact?.id;
-
-          if (existingContactId) {
-            // Update existing contact with new tags
-            await fetch(`https://services.leadconnectorhq.com/contacts/${existingContactId}`, {
-              method: 'PUT',
-              headers: {
-                'Authorization': `Bearer ${process.env.GHL_API_KEY}`,
-                'Content-Type': 'application/json',
-                'Version': '2021-07-28',
-              },
-              body: JSON.stringify({
-                tags: tags,
-              }),
-            });
-          }
+            body: JSON.stringify({
+              tags: tags,
+              firstName: firstName || undefined,
+              lastName: lastName || undefined,
+            }),
+          });
         }
 
         return res.status(200).json({
           success: true,
           message: 'Registration successful',
-          contactId: 'existing',
+          contactId: existingContactId || 'existing',
         });
       }
 
