@@ -1484,13 +1484,12 @@
         <div class="container">
             <!-- VSL Section -->
             <div class="vsl-section">
-                <span class="hero-badge">FREE LIVE MASTERCLASS — WEDNESDAY, FEBRUARY 25TH</span>
+                <span class="hero-badge">FREE LIVE MASTERCLASS — MULTIPLE DATES AVAILABLE</span>
                 <h1>The Mindset & Strategies That <span>Real Entrepreneurs</span> Use to Build Wealth</h1>
 
                 <div class="vsl-container">
                     <video id="vsl-video" controls playsinline autoplay muted>
-                        <source src="https://storage.googleapis.com/msgsndr/ZTzlr9OKa82mgQ8vn680/media/697cd71ff7a87735e97a391c.mov" type="video/quicktime">
-                        <source src="https://storage.googleapis.com/msgsndr/ZTzlr9OKa82mgQ8vn680/media/697cd71ff7a87735e97a391c.mov" type="video/mp4">
+                        <source src="https://storage.googleapis.com/msgsndr/ZTzlr9OKa82mgQ8vn680/media/698395664599867afa50e894.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -1587,7 +1586,7 @@
                     </div>
 
                     <div class="urgency-banner">
-                        <span id="spots-counter">Live on Wednesday, February 25th - Spots Are Limited!</span>
+                        <span id="spots-counter">Choose Your Date - Spots Are Limited!</span>
                     </div>
 
                     <form id="registration-form">
@@ -1922,7 +1921,7 @@
                 </div>
 
                 <div class="urgency-banner">
-                    <span>Live on Wednesday, February 25th - Spots Are Limited!</span>
+                    <span>Choose Your Date - Spots Are Limited!</span>
                 </div>
 
                 <form id="modal-registration-form">
@@ -2066,7 +2065,7 @@
             submitBtn.disabled = true;
 
             try {
-                const response = await fetch('/api/register', {
+                const response = await fetch('https://webinar-mastermind.vercel.app/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
