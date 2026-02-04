@@ -1,6 +1,7 @@
 {
   "name": "webinar-mastermind",
   "version": "1.0.0",
+  "type": "module",
   "description": "Todd Pulc Webinar Funnel",
   "scripts": {
     "dev": "live-server --port=3000 --open=webinar-funnel.html",
