@@ -82,3 +82,14 @@ OFFER STRATEGY
 - Create urgency: 24-hour limited offer
 - VIP scarcity: "Limited to 20 spots"
 
+
+DATES:
+FEB 16th 7:00 PM Eastern Standard
+Wed Feb 18th same time
+Add day b4 16th put sold out
+
+
+Do like grant 
+
+
+1 more thing before dallas next week. QR Code for 6 month Mentorship program
