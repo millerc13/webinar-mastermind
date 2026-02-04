@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Masterclass with Todd Pultz | Build Real Wealth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --white: #ffffff;
+            --off-white: #f4f7fc;
+            --dark: #0a0a14;
+            --darker: #050508;
+            --dark-card: #0d0d16;
+            --blue-primary: #0066FF;
+            --blue-bright: #0088FF;
+            --blue-electric: #00AAFF;
+            --blue-glow: rgba(0, 102, 255, 0.4);
+            --blue-subtle: rgba(0, 102, 255, 0.08);
+            --cyan: #00D4FF;
+            --gold: #FFD700;
+            --text: #ffffff;
+            --text-muted: #8892a4;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent: #E63946;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background-color: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        ::selection {
+            background: var(--blue-primary);
+            color: var(--white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 44px;
+            width: auto;
+        }
+
+        .header-cta {
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-bright) 50%, var(--blue-primary) 100%);
+            background-size: 200% 100%;
+            color: var(--white);
+            padding: 12px 26px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--blue-glow);
+            position: relative;
+            overflow: hidden;
+            animation: headerBtnPulse 2.5s ease-in-out infinite;
+        }
+
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: btnShimmer 3s ease-in-out infinite;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px var(--blue-glow);
+            animation: none;
+        }
+
+        .header-cta:hover::before {
+            animation: none;
+        }
+
+        @keyframes headerBtnPulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px var(--blue-glow);
+            }
+            50% {
+                box-shadow: 0 4px 20px var(--blue-glow), 0 0 15px rgba(0, 212, 255, 0.15);
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 0 80px;
+            background: var(--darker);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center top, rgba(0, 102, 255, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* VSL Section */
+        .vsl-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .vsl-container {
+            max-width: 900px;
+            margin: 0 auto 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 80px var(--blue-glow);
+            border: 1px solid var(--glass-border);
+            background: var(--dark-card);
+        }
+
+        .vsl-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--blue-subtle);
+            color: var(--cyan);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .hero h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3.25rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 span {
+            color: var(--cyan);
+        }
+
+        .vsl-section .hero-subtitle {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-subheading {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .hero-features {
+            list-style: none;
+            margin-bottom: 35px;
+        }
+
+        .hero-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .hero-features li svg {
+            color: var(--cyan);
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .hero-features li div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .hero-features li strong {
+            font-weight: 600;
+            color: var(--white);
+            font-size: 1.05rem;
+        }
+
+        .hero-features li span {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Who Section */
+        .hero-who {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .hero-who h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 15px;
+        }
+
+        .hero-who ul {
+            list-style: none;
+        }
+
+        .hero-who ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .hero-who ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--cyan);
+        }
+
+        /* Host Section */
+        .hero-host {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--blue-subtle) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+        }
+
+        .host-avatar {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--cyan);
+            flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .host-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .host-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .host-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .host-info h4 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 2px;
+        }
+
+        .host-title {
+            font-size: 0.9rem;
+            color: var(--cyan);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .host-socials {
+            display: flex;
+            gap: 8px;
+        }
+
+        .social-link-sm {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link-sm:hover {
+            transform: translateY(-2px);
+        }
+
+        .social-link-sm svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .social-link-sm.facebook:hover {
+            background: rgba(24, 119, 242, 0.2);
+            border-color: #1877F2;
+            color: #1877F2;
+        }
+
+        .social-link-sm.instagram:hover {
+            background: linear-gradient(45deg, rgba(253, 29, 29, 0.2), rgba(131, 58, 180, 0.2));
+            border-color: #E4405F;
+            color: #E4405F;
+        }
+
+        .social-link-sm.youtube:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #FF0000;
+            color: #FF0000;
+        }
+
+        .social-link-sm.tiktok:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        /* Registration Form */
+        .form-container {
+            background: var(--dark-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--blue-primary), var(--cyan), transparent);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+        }
+
+        .urgency-banner {
+            background: linear-gradient(90deg, var(--accent), #C1121F);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            background: var(--darker);
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--blue-primary);
+            box-shadow: 0 0 0 3px var(--blue-subtle);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-bright) 50%, var(--blue-primary) 100%);
+            background-size: 200% 100%;
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 20px var(--blue-glow);
+            position: relative;
+            overflow: hidden;
+            animation: btnPulse 2s ease-in-out infinite, btnGradient 3s ease infinite;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: btnShimmer 2.5s ease-in-out infinite;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 10px 35px var(--blue-glow), 0 0 25px rgba(0, 212, 255, 0.3);
+            animation: none;
+            background-position: 100% 0;
+        }
+
+        .submit-btn:hover::before {
+            animation: none;
+            left: 100%;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-footer svg {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        /* What You'll Learn Section */
+        .learn-section {
+            padding: 80px 0 60px;
+            background: var(--dark);
+            position: relative;
+        }
+
+        .learn-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            color: var(--cyan);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .section-header h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .learn-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .learn-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 35px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .learn-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 102, 255, 0.15);
+        }
+
+        .learn-card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--blue-subtle) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .learn-card-icon svg {
+            color: var(--cyan);
+        }
+
+        .learn-card h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .learn-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 80px 0 60px;
+            background: var(--darker);
+            position: relative;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(0, 102, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(0, 212, 255, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+        }
+
+        .about-image-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-bright) 100%);
+            color: var(--white);
+            padding: 20px 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px var(--blue-glow);
+        }
+
+        .about-image-badge .number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            display: block;
+            line-height: 1;
+        }
+
+        .about-image-badge .label {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .about-text h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .about-text h2 span {
+            color: var(--cyan);
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .stat-item h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: var(--cyan);
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Testimonials Section */
+        .testimonials-section {
+            padding: 80px 0 60px;
+            background: var(--dark);
+            position: relative;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            border-color: rgba(0, 212, 255, 0.2);
+        }
+
+        .testimonial-stars {
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .testimonial-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: var(--text-muted);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--cyan) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .testimonial-info h4 {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .testimonial-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 80px 0 60px;
+            background: var(--darker);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(0, 212, 255, 0.2);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 22px 25px;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .faq-question:hover {
+            color: var(--cyan);
+        }
+
+        .faq-question svg {
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-item.active .faq-question svg {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer-content {
+            padding: 0 25px 22px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Final CTA Section */
+        .final-cta {
+            padding: 70px 0;
+            background: var(--dark);
+            text-align: center;
+            position: relative;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0, 102, 255, 0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .final-cta h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta h2 span {
+            color: var(--cyan);
+        }
+
+        .final-cta p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta-btn {
+            display: inline-block;
+            padding: 20px 55px;
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-bright) 50%, var(--blue-primary) 100%);
+            background-size: 200% 100%;
+            color: var(--white);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 25px var(--blue-glow);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            animation: btnPulse 2s ease-in-out infinite, btnGradient 3s ease infinite, btnBounce 2s ease-in-out infinite;
+        }
+
+        .final-cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.25),
+                transparent
+            );
+            animation: btnShimmer 2.5s ease-in-out infinite;
+        }
+
+        .final-cta-btn::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--cyan), var(--blue-primary), var(--cyan));
+            z-index: -1;
+            opacity: 0;
+            animation: btnRingPulse 2s ease-in-out infinite;
+        }
+
+        .final-cta-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 20px 50px var(--blue-glow), 0 0 40px rgba(0, 212, 255, 0.4);
+            animation: none;
+            background-position: 100% 0;
+        }
+
+        .final-cta-btn:hover::before {
+            animation: none;
+            left: 100%;
+        }
+
+        .final-cta-btn:hover::after {
+            opacity: 0.6;
+        }
+
+        /* Section CTA Buttons */
+        .section-cta {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .section-cta-btn {
+            display: inline-block;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-bright) 50%, var(--blue-primary) 100%);
+            background-size: 200% 100%;
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px var(--blue-glow);
+            position: relative;
+            overflow: hidden;
+            animation: btnPulse 2s ease-in-out infinite, btnGradient 3s ease infinite, btnBounce 2s ease-in-out infinite;
+        }
+
+        /* Shimmer effect */
+        .section-cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: btnShimmer 2.5s ease-in-out infinite;
+        }
+
+        /* Glow ring effect */
+        .section-cta-btn::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, var(--cyan), var(--blue-primary), var(--cyan));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: btnRingPulse 2s ease-in-out infinite;
+        }
+
+        .section-cta-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px var(--blue-glow), 0 0 30px rgba(0, 212, 255, 0.3);
+            animation: none;
+            background-position: 100% 0;
+        }
+
+        .section-cta-btn:hover::before {
+            animation: none;
+            left: 100%;
+        }
+
+        .section-cta-btn:hover::after {
+            opacity: 0.5;
+        }
+
+        @keyframes btnPulse {
+            0%, 100% {
+                box-shadow: 0 4px 20px var(--blue-glow);
+            }
+            50% {
+                box-shadow: 0 6px 30px var(--blue-glow), 0 0 20px rgba(0, 212, 255, 0.2);
+            }
+        }
+
+        @keyframes btnGradient {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes btnShimmer {
+            0% {
+                left: -100%;
+            }
+            50%, 100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes btnRingPulse {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes btnBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-6px);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+            75% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: var(--dark-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 100px var(--blue-glow);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .modal-content {
+            padding: 50px 40px 40px;
+        }
+
+        .modal-content .form-header {
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 480px) {
+            .modal-container {
+                border-radius: 16px;
+            }
+
+            .modal-content {
+                padding: 45px 25px 30px;
+            }
+
+            .section-cta-btn {
+                padding: 14px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .social-link.facebook:hover {
+            background: rgba(24, 119, 242, 0.2);
+            border-color: #1877F2;
+            color: #1877F2;
+        }
+
+        .social-link.instagram:hover {
+            background: linear-gradient(45deg, rgba(253, 29, 29, 0.2), rgba(131, 58, 180, 0.2));
+            border-color: #E4405F;
+            color: #E4405F;
+        }
+
+        .social-link.youtube:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #FF0000;
+            color: #FF0000;
+        }
+
+        .social-link.tiktok:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--darker);
+            padding: 50px 0 40px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .footer-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            margin-top: 15px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--cyan);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-content,
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .hero h1 {
+                font-size: 2.75rem;
+            }
+
+            .learn-grid,
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-image {
+                order: -1;
+            }
+
+            .about-image-badge {
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+
+            .vsl-section {
+                margin-bottom: 40px;
+            }
+
+            .vsl-container {
+                border-radius: 12px;
+            }
+
+            .hero-host {
+                padding: 16px;
+            }
+
+            .host-avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .form-container {
+                padding: 30px 25px;
+            }
+
+            .learn-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header h2,
+            .about-text h2 {
+                font-size: 2.25rem;
+            }
+
+            .final-cta h2 {
+                font-size: 2.5rem;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .header-cta {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.85rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .form-container {
+                padding: 25px 20px;
+            }
+
+            .final-cta h2 {
+                font-size: 2rem;
+            }
+
+            .final-cta-btn {
+                padding: 16px 35px;
+                font-size: 1rem;
+            }
+
+            .vsl-container {
+                border-radius: 8px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            }
+
+            .hero-subheading {
+                font-size: 1.25rem;
+            }
+
+            .hero-who {
+                padding: 20px;
+            }
+
+            .hero-host {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .host-info {
+                align-items: center;
+            }
+
+            .host-socials {
+                justify-content: center;
+            }
+
+            .host-avatar {
+                width: 90px;
+                height: 90px;
+            }
+
+            .footer-social {
+                gap: 10px;
+            }
+
+            .social-link {
+                width: 36px;
+                height: 36px;
+            }
+
+            .social-link svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo"><img src="https://storage.googleapis.com/msgsndr/ZTzlr9OKa82mgQ8vn680/media/69277b484ee4a3826c4e244a.png" alt="Todd Pultz"></a>
+                <button class="header-cta open-modal-btn">Claim Free Ticket</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <!-- VSL Section -->
+            <div class="vsl-section">
+                <span class="hero-badge">FREE LIVE MASTERCLASS — WEDNESDAY, FEBRUARY 25TH</span>
+                <h1>The Mindset & Strategies That <span>Real Entrepreneurs</span> Use to Build Wealth</h1>
+
+                <div class="vsl-container">
+                    <video id="vsl-video" controls playsinline autoplay muted>
+                        <source src="https://storage.googleapis.com/msgsndr/ZTzlr9OKa82mgQ8vn680/media/697cd71ff7a87735e97a391c.mov" type="video/quicktime">
+                        <source src="https://storage.googleapis.com/msgsndr/ZTzlr9OKa82mgQ8vn680/media/697cd71ff7a87735e97a391c.mov" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                <p class="hero-subtitle">Join nine-figure entrepreneur Todd Pultz as he reveals the exact thinking and tactics that separate those who build real wealth from those who stay stuck.</p>
+
+                <button class="section-cta-btn open-modal-btn" style="margin-top: 25px;">Claim Free Ticket</button>
+            </div>
+
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2 class="hero-subheading">Inside This Free Masterclass:</h2>
+
+                    <ul class="hero-features">
+                        <li>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <div>
+                                <strong>The Wealth Mindset</strong>
+                                <span>How successful entrepreneurs think differently about money, risk, and opportunity</span>
+                            </div>
+                        </li>
+                        <li>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <div>
+                                <strong>Breaking Free From "Stuck"</strong>
+                                <span>Why most people stay stuck financially despite working hard—and how to escape</span>
+                            </div>
+                        </li>
+                        <li>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <div>
+                                <strong>Real Estate & Business Strategies</strong>
+                                <span>The exact tactics Todd used to build a nine-figure portfolio from nothing</span>
+                            </div>
+                        </li>
+                        <li>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <div>
+                                <strong>Your Action Plan</strong>
+                                <span>The first real steps you can take to change your income starting right now</span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="hero-who">
+                        <h3>This Masterclass Is For You If:</h3>
+                        <ul>
+                            <li>You're working hard but still feel stuck financially</li>
+                            <li>You know there's more out there for you</li>
+                            <li>You're ready to learn how entrepreneurship and real estate actually work</li>
+                            <li>You want real strategies, not motivational fluff</li>
+                        </ul>
+                    </div>
+
+                    <div class="hero-host">
+                        <div class="host-avatar">
+                            <img src="https://storage.googleapis.com/msgsndr/ZTzlr9OKa82mgQ8vn680/media/695fdc8c7cc1b933dc6ae9b9.png" alt="Todd Pultz">
+                        </div>
+                        <div class="host-info">
+                            <p class="host-label">Your Host</p>
+                            <h4>Todd Pultz</h4>
+                            <p class="host-title">Nine-Figure Entrepreneur</p>
+                            <div class="host-socials">
+                                <a href="https://www.facebook.com/todd.pultz" target="_blank" class="social-link-sm facebook" aria-label="Facebook">
+                                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                </a>
+                                <a href="https://www.instagram.com/toddpultzofficial/" target="_blank" class="social-link-sm instagram" aria-label="Instagram">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                </a>
+                                <a href="https://www.youtube.com/@toddpultzofficial" target="_blank" class="social-link-sm youtube" aria-label="YouTube">
+                                    <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                                </a>
+                                <a href="https://www.tiktok.com/@toddpultzofficial" target="_blank" class="social-link-sm tiktok" aria-label="TikTok">
+                                    <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="form-container" id="register">
+                    <div class="form-header">
+                        <h3>Claim Your FREE Ticket</h3>
+                        <p>Join thousands who are taking control of their financial future</p>
+                    </div>
+
+                    <div class="urgency-banner">
+                        <span id="spots-counter">Live on Wednesday, February 25th - Spots Are Limited!</span>
+                    </div>
+
+                    <form id="registration-form">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your best email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Claim Free Ticket</button>
+                    </form>
+
+                    <p class="form-footer">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        Your information is 100% secure and will never be shared.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What You'll Learn Section -->
+    <section class="learn-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Inside This Masterclass</span>
+                <h2>What You'll Learn</h2>
+                <p>No hype. No fluff. No motivational nonsense. Just real strategies that work.</p>
+            </div>
+
+            <div class="learn-grid">
+                <div class="learn-card">
+                    <div class="learn-card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <h3>The Wealth Mindset</h3>
+                    <p>Discover how successful entrepreneurs think differently about money, risk, and opportunity. Learn the mental frameworks that separate the wealthy from everyone else.</p>
+                </div>
+
+                <div class="learn-card">
+                    <div class="learn-card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <h3>Real Estate Strategies</h3>
+                    <p>Learn the exact real estate strategies Todd used to build his portfolio. Understand how to identify opportunities and build assets that generate passive income.</p>
+                </div>
+
+                <div class="learn-card">
+                    <div class="learn-card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Breaking Free From "Stuck"</h3>
+                    <p>Understand exactly why most people stay stuck financially despite working hard. Learn the specific patterns that keep people trapped and how to break free.</p>
+                </div>
+
+                <div class="learn-card">
+                    <div class="learn-card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h3>Entrepreneurship Fundamentals</h3>
+                    <p>Get a clear understanding of how entrepreneurship actually works. No sugar-coating, just the real principles that drive business success.</p>
+                </div>
+
+                <div class="learn-card">
+                    <div class="learn-card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Actionable First Steps</h3>
+                    <p>Leave with a clear roadmap of the first real steps you can take to start changing your income immediately. No vague advice, just actionable tactics.</p>
+                </div>
+
+                <div class="learn-card">
+                    <div class="learn-card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>Live Q&A Session</h3>
+                    <p>Get your specific questions answered directly by Todd. This is your chance to get personalized guidance for your unique situation.</p>
+                </div>
+            </div>
+
+            <div class="section-cta">
+                <button class="section-cta-btn open-modal-btn">Claim Free Ticket</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://storage.googleapis.com/msgsndr/ZTzlr9OKa82mgQ8vn680/media/6978f1c65faeb3ca52c35b15.png" alt="Todd Pultz">
+                </div>
+
+                <div class="about-text">
+                    <span class="section-label">Your Host</span>
+                    <h2>Meet <span>Todd Pultz</span></h2>
+                    <p>Todd Pultz is a nine-figure entrepreneur who built his empire from nothing. Growing up broke with no money, no connections, and no roadmap, he made every mistake you can imagine: bad credit, foreclosure, and starting over from scratch multiple times.</p>
+                    <p>What changed everything wasn't working harder—it was learning how entrepreneurship and real estate actually work. Now Todd is dedicated to sharing the exact mindset and strategies that transformed his life so others can shortcut their path to success.</p>
+                    <p>In this masterclass, Todd shares the real, unfiltered truth about building wealth. No motivational fluff—just the practical knowledge that actually moves the needle.</p>
+
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <h4>9 Figures</h4>
+                            <p>Business Revenue</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>20+ Years</h4>
+                            <p>Experience</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>2,000+</h4>
+                            <p>Students Taught</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="section-cta" style="margin-top: 30px;">
+                <button class="section-cta-btn open-modal-btn">Claim Free Ticket</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Success Stories</span>
+                <h2>What Others Are Saying</h2>
+                <p>Real results from people who took action after attending the masterclass.</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        ★★★★★
+                    </div>
+                    <p class="testimonial-text">"Todd's masterclass completely changed how I think about money and business. Within 6 months of applying what I learned, I started my first real estate investment. The no-BS approach is exactly what I needed."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MJ</div>
+                        <div class="testimonial-info">
+                            <h4>Marcus J.</h4>
+                            <p>Business Owner</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        ★★★★★
+                    </div>
+                    <p class="testimonial-text">"I was stuck in the same job for 8 years, always 'thinking' about starting something. Todd showed me exactly why I was stuck and what to do about it. Finally took action and haven't looked back."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SR</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah R.</h4>
+                            <p>Entrepreneur</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        ★★★★★
+                    </div>
+                    <p class="testimonial-text">"Most 'gurus' give you motivation. Todd gives you a roadmap. The mindset shifts alone were worth attending, but the specific strategies on real estate changed my entire financial trajectory."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">DW</div>
+                        <div class="testimonial-info">
+                            <h4>David W.</h4>
+                            <p>Real Estate Investor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-cta">
+                <button class="section-cta-btn open-modal-btn">Claim Free Ticket</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Questions?</span>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Is this really free?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes, the masterclass is 100% free. Todd believes everyone deserves access to real education about building wealth, regardless of their current financial situation. There's no catch—just show up ready to learn.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What if I can't make it live?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            We highly encourage attending live so you can participate in the Q&A and get your questions answered. However, if you register and can't make it, you'll receive information about the next available session.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Who is this masterclass for?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            This masterclass is for anyone who feels stuck financially and knows there's more out there for them. Whether you're just starting out, looking to change careers, or want to add real estate to your portfolio—if you're serious about changing your income, this is for you.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Do I need any prior experience?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            No prior experience in business or real estate is required. Todd started from zero himself and understands what it's like to begin with nothing. The masterclass is designed to give you a foundation whether you're brand new or have some experience.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        How long is the masterclass?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            The masterclass typically runs 60-90 minutes, including a live Q&A session at the end. We recommend blocking off the full time so you can get the most value and have your questions answered.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-cta">
+                <button class="section-cta-btn open-modal-btn">Claim Free Ticket</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to <span>Change Your Life</span>?</h2>
+            <p>Stop working hard and staying stuck. Learn the mindset and strategies that actually build wealth. Your ticket is waiting.</p>
+            <button class="final-cta-btn open-modal-btn">Claim Free Ticket</button>
+        </div>
+    </section>
+
+    <!-- Registration Modal -->
+    <div class="modal-overlay" id="registration-modal">
+        <div class="modal-container">
+            <button class="modal-close" id="modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <div class="modal-content">
+                <div class="form-header">
+                    <h3>Claim Your FREE Ticket</h3>
+                    <p>Join thousands who are taking control of their financial future</p>
+                </div>
+
+                <div class="urgency-banner">
+                    <span>Live on Wednesday, February 25th - Spots Are Limited!</span>
+                </div>
+
+                <form id="modal-registration-form">
+                    <div class="form-group">
+                        <label for="modalFirstName">First Name</label>
+                        <input type="text" id="modalFirstName" name="firstName" placeholder="Enter your first name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalLastName">Last Name</label>
+                        <input type="text" id="modalLastName" name="lastName" placeholder="Enter your last name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalEmail">Email Address</label>
+                        <input type="email" id="modalEmail" name="email" placeholder="Enter your best email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalPhone">Phone Number</label>
+                        <input type="tel" id="modalPhone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Claim Free Ticket</button>
+                </form>
+
+                <p class="form-footer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Your information is 100% secure and will never be shared.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-social">
+                <a href="https://www.facebook.com/todd.pultz" target="_blank" class="social-link facebook" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/toddpultzofficial/" target="_blank" class="social-link instagram" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.youtube.com/@toddpultzofficial" target="_blank" class="social-link youtube" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+                <a href="https://www.tiktok.com/@toddpultzofficial" target="_blank" class="social-link tiktok" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                </a>
+            </div>
+            <p>&copy; 2024 Todd Pultz. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('registration-modal');
+        const modalClose = document.getElementById('modal-close');
+        const openModalBtns = document.querySelectorAll('.open-modal-btn');
+
+        function openModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Open modal buttons
+        openModalBtns.forEach(btn => {
+            btn.addEventListener('click', openModal);
+        });
+
+        // Close modal button
+        modalClose.addEventListener('click', closeModal);
+
+        // Close modal on overlay click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const answer = faqItem.querySelector('.faq-answer');
+                const isActive = faqItem.classList.contains('active');
+
+                // Close all other FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-answer').style.maxHeight = null;
+                });
+
+                // Toggle current FAQ
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form submission handler
+        async function handleFormSubmit(formData, submitBtn) {
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Registering...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Redirect to thank you page
+                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}&email=${encodeURIComponent(formData.email)}`;
+                } else {
+                    throw new Error(result.error || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('There was an error with your registration. Please try again.');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Inline form submission
+        document.getElementById('registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            handleFormSubmit(formData, this.querySelector('.submit-btn'));
+        });
+
+        // Modal form submission
+        document.getElementById('modal-registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = {
+                firstName: document.getElementById('modalFirstName').value,
+                lastName: document.getElementById('modalLastName').value,
+                email: document.getElementById('modalEmail').value,
+                phone: document.getElementById('modalPhone').value
+            };
+
+            handleFormSubmit(formData, this.querySelector('.submit-btn'));
+        });
+
+
+        // Optional: Add countdown timer functionality
+        // Uncomment and configure if you want a countdown to the next webinar
+        /*
+        function updateCountdown() {
+            // Set your webinar date here
+            const webinarDate = new Date('2024-XX-XX XX:XX:00').getTime();
+            const now = new Date().getTime();
+            const distance = webinarDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML =
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('countdown').innerHTML = "LIVE NOW!";
+            }
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+        */
+    </script>
+
+</body>
+</html>
