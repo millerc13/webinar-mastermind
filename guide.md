@@ -124,52 +124,137 @@ Go to: **Automation → Workflows → Create Workflow**
 
 > The Vercel API creates the contact and adds this tag via GHL API. When the tag is added, this workflow fires.
 
-**Actions:**
+**Actions (Step-by-Step in GHL):**
 
-```
-1. IF/ELSE (Add date-specific tag based on Webinar Date field)
-   ├── IF masterclass_0226__date = "Feb 16, 2026"
-   │   └── Add Tag: "Masterclass 0226 - Feb 16"
-   └── IF masterclass_0226__date = "Feb 18, 2026"
-       └── Add Tag: "Masterclass 0226 - Feb 18"
+---
 
-2. Add to Pipeline: "Masterclass 0226 - Registration" → Stage: "New Registration"
+**Action 1: Add Condition (Date-Specific Tag)**
 
-3. Add Tag: "Setter - Needs Outreach"
+1. Click **+ Add Action** → Select **Condition**
+2. **Action Name:** `Check Webinar Date`
+3. **Scenario Recipe:** Select `Build Your Own`
+4. **Set up Branch 1 (Feb 16):**
+   - Click on the **Branch** box
+   - Rename it to: `Feb 16`
+   - In **Select** dropdown: Choose `Contact Field`
+   - Select field: `Masterclass 0226 - Date`
+   - In **Select Operator**: Choose `Is`
+   - Value: `Feb 16, 2026`
+5. Click **+ Add Branch** for Branch 2 (Feb 18):
+   - Rename it to: `Feb 18`
+   - **Select:** `Contact Field`
+   - Select field: `Masterclass 0226 - Date`
+   - **Operator:** `Is`
+   - Value: `Feb 18, 2026`
+6. Click **Save Action**
 
-4. Send Email: "Confirmation - You're Registered!"
-   Subject: "You're in! Here's your Zoom link for Todd's Masterclass"
-   Body:
+**Inside Feb 16 Branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 16`
+
+**Inside Feb 18 Branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 18`
+
+**Inside None Branch:** Leave empty (handles edge cases)
+
+---
+
+**Action 2: Add to Pipeline**
+
+1. Click **+ Add Action** (after the condition block, not inside a branch)
+2. Select **Add to Workflow Pipeline**
+3. Pipeline: `Masterclass 0226 - Registration`
+4. Stage: `New Registration`
+
+---
+
+**Action 3: Add Tag**
+
+1. Click **+ Add Action** → **Add Tag**
+2. Tag: `Setter - Needs Outreach`
+
+---
+
+**Action 4: Send Email**
+
+1. Click **+ Add Action** → **Send Email**
+2. Subject: `You're in! Here's your Zoom link for Todd's Masterclass`
+3. Body should include:
    - Welcome message
-   - Zoom link
-   - Date/time ({{ contact.masterclass_0226__date }} @ 7PM ET)
+   - Zoom link (you'll add this manually)
+   - Date/time: Use merge field `{{ contact.masterclass_0226__date }}` @ 7PM ET
    - Add to Calendar link
 
-5. Wait: 2 minutes
+---
 
-6. Send SMS:
-   "Hey {{contact.first_name}}! You're confirmed for Todd's FREE masterclass.
-   Quick question - what's the #1 thing you want to improve in your financial life?
-   Reply and let me know!"
+**Action 5: Wait**
 
-7. Internal Notification (Email or SMS to your team):
-   "🔥 NEW WEBINAR REGISTRATION
-   Name: {{contact.first_name}} {{contact.last_name}}
-   Phone: {{contact.phone}}
-   Email: {{contact.email}}
-   Date: {{ contact.masterclass_0226__date }}
+1. Click **+ Add Action** → **Wait**
+2. Wait for: `2 minutes`
 
-   TEXT THEM NOW!"
+---
 
-8. Wait: 15 minutes
+**Action 6: Send SMS**
 
-9. IF/ELSE:
-   ├── IF Tag contains "Masterclass 0226 - VIP" → STOP
-   ├── IF Tag = "Masterclass 0226 - Free Confirmed" → STOP
-   └── ELSE:
-       ├── Move Pipeline Stage: "Abandon Cart"
-       └── Go to Workflow: "Masterclass 0226 - Abandon Cart Recovery"
+1. Click **+ Add Action** → **Send SMS**
+2. Message:
 ```
+Hey {{contact.first_name}}! You're confirmed for Todd's FREE masterclass.
+Quick question - what's the #1 thing you want to improve in your financial life?
+Reply and let me know!
+```
+
+---
+
+**Action 7: Internal Notification**
+
+1. Click **+ Add Action** → **Internal Notification** (or Send Email to your team)
+2. Send to: Your team email or phone
+3. Message:
+```
+🔥 NEW WEBINAR REGISTRATION
+Name: {{contact.first_name}} {{contact.last_name}}
+Phone: {{contact.phone}}
+Email: {{contact.email}}
+Date: {{ contact.masterclass_0226__date }}
+
+TEXT THEM NOW!
+```
+
+---
+
+**Action 8: Wait**
+
+1. Click **+ Add Action** → **Wait**
+2. Wait for: `15 minutes`
+
+---
+
+**Action 9: Add Condition (Abandon Cart Check)**
+
+1. Click **+ Add Action** → **Condition**
+2. **Action Name:** `Check if Purchased or Confirmed`
+3. **Scenario Recipe:** `Build Your Own`
+
+**Branch 1 - VIP Purchased (Stop):**
+- Rename to: `VIP Purchased`
+- **Select:** `Contact Tag`
+- **Operator:** `Contains`
+- Value: `Masterclass 0226 - VIP`
+- Inside this branch: Add **End Workflow** (or leave empty to stop)
+
+**Branch 2 - Free Confirmed (Stop):**
+- Click **+ Add Branch**
+- Rename to: `Free Confirmed`
+- **Select:** `Contact Tag`
+- **Operator:** `Is`
+- Value: `Masterclass 0226 - Free Confirmed`
+- Inside this branch: Add **End Workflow** (or leave empty)
+
+**None Branch (Abandon Cart):**
+- This is the ELSE - they didn't purchase or confirm free
+- Add action: **Update Opportunity Stage**
+  - Pipeline: `Masterclass 0226 - Registration`
+  - Stage: `Abandon Cart`
+- Add action: **Add to Workflow**
+  - Select: `Masterclass 0226 - Abandon Cart Recovery`
 
 ---
 
