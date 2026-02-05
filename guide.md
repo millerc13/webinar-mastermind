@@ -124,9 +124,15 @@ Go to: **Automation → Workflows → Create Workflow**
 
 > The Vercel API creates the contact and adds this tag via GHL API. When the tag is added, this workflow fires.
 
-**Actions (Step-by-Step in GHL):**
+**Using GHL Advanced Builder with Two Flows:**
 
-> **Important:** In GHL, you can only add actions INSIDE condition branches, not after them. So we put the common actions first, then the condition last.
+> This workflow uses two separate flows within the same workflow. The first flow handles registration, the second flow handles abandon cart checking. This avoids duplicating logic.
+
+---
+
+## FLOW 1: Registration Flow
+
+**Trigger:** Tag Added → `Masterclass 0226 - Registered`
 
 ---
 
@@ -195,21 +201,19 @@ TEXT THEM NOW!
 
 **Action 7: Condition (Add Date-Specific Tag)**
 
-This adds the tag that triggers the reminder workflow for their specific date.
+This adds the tag that triggers the reminder workflow AND Flow 2.
 
 1. Click **+ Add Action** → **Condition**
 2. **Action Name:** `Add Date Tag`
 3. **Scenario Recipe:** Select `Build Your Own`
 
 **Branch 1 - Feb 16, 2026:**
-- Click on the **Branch** box, rename to: `Feb 16, 2026`
+- Rename to: `Feb 16, 2026`
 - **Select:** `Contact Field`
 - **Field:** `Masterclass 0226 - Date`
 - **Operator:** `Is`
 - **Value:** `Feb 16, 2026`
 - **Inside this branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 16`
-- **Then add:** Wait → `15 minutes`
-- **Then add:** Another Condition (see Action 8 below - you'll duplicate it here)
 
 **Branch 2 - Feb 18, 2026:**
 - Click **+ Add Branch**, rename to: `Feb 18, 2026`
@@ -218,18 +222,34 @@ This adds the tag that triggers the reminder workflow for their specific date.
 - **Operator:** `Is`
 - **Value:** `Feb 18, 2026`
 - **Inside this branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 18`
-- **Then add:** Wait → `15 minutes`
-- **Then add:** Another Condition (see Action 8 below - you'll duplicate it here)
 
-**None Branch:**
-- **Inside this branch:** Wait → `15 minutes`
-- **Then add:** Another Condition (see Action 8 below)
+**None Branch:** Leave empty
 
 ---
 
-**Action 8: Condition (Abandon Cart Check) - Add inside EACH branch above**
+## FLOW 2: Abandon Cart Check
 
-Inside each of the 3 branches from Action 7, add this condition:
+**Add a second trigger to this workflow:**
+
+1. In the Advanced Builder, click **+ Add Trigger**
+2. Select **Tag Added**
+3. Choose tag: `Masterclass 0226 - Feb 16`
+4. Click **+ Add Trigger** again
+5. Select **Tag Added**
+6. Choose tag: `Masterclass 0226 - Feb 18`
+
+> Both tags trigger this same flow - it runs when either date tag is added.
+
+---
+
+**Action 1: Wait**
+
+1. Click **+ Add Action** → **Wait**
+2. Wait for: `15 minutes`
+
+---
+
+**Action 2: Condition (Check VIP or Free Confirmed)**
 
 1. Click **+ Add Action** → **Condition**
 2. **Action Name:** `Check if Purchased or Confirmed`
@@ -240,17 +260,16 @@ Inside each of the 3 branches from Action 7, add this condition:
 - **Select:** `Contact Tag`
 - **Operator:** `Contains`
 - **Value:** `Masterclass 0226 - VIP`
-- **Inside this branch:** Leave empty (workflow ends, they're VIP)
+- **Inside this branch:** Leave empty (workflow ends)
 
 **Branch 2 - Free Confirmed:**
 - Click **+ Add Branch**, rename to: `Free Confirmed`
 - **Select:** `Contact Tag`
 - **Operator:** `Is`
 - **Value:** `Masterclass 0226 - Free Confirmed`
-- **Inside this branch:** Leave empty (workflow ends, they confirmed free)
+- **Inside this branch:** Leave empty (workflow ends)
 
 **None Branch - Abandon Cart:**
-- This catches anyone who didn't take action
 - **Inside this branch:**
   1. Add action → **Update Opportunity Stage**
      - Pipeline: `Masterclass 0226 - Registration`
@@ -263,7 +282,9 @@ Inside each of the 3 branches from Action 7, add this condition:
 ### Visual Flow Summary
 
 ```
-Start (Tag Added: Masterclass 0226 - Registered)
+FLOW 1 - Registration
+━━━━━━━━━━━━━━━━━━━━━
+Trigger: Tag Added "Masterclass 0226 - Registered"
   │
   ├── Add to Pipeline → New Registration
   ├── Add Tag → Setter - Needs Outreach
@@ -273,32 +294,26 @@ Start (Tag Added: Masterclass 0226 - Registered)
   ├── Internal Notification
   │
   └── Condition: Check Date
-        │
-        ├── Feb 16, 2026 Branch:
-        │     ├── Add Tag → Masterclass 0226 - Feb 16
-        │     ├── Wait 15 min
-        │     └── Condition: Check VIP/Free
-        │           ├── VIP Purchased → End
-        │           ├── Free Confirmed → End
-        │           └── None → Move to Abandon Cart + Start Recovery Workflow
-        │
-        ├── Feb 18, 2026 Branch:
-        │     ├── Add Tag → Masterclass 0226 - Feb 18
-        │     ├── Wait 15 min
-        │     └── Condition: Check VIP/Free
-        │           ├── VIP Purchased → End
-        │           ├── Free Confirmed → End
-        │           └── None → Move to Abandon Cart + Start Recovery Workflow
-        │
-        └── None Branch:
-              ├── Wait 15 min
-              └── Condition: Check VIP/Free
-                    ├── VIP Purchased → End
-                    ├── Free Confirmed → End
-                    └── None → Move to Abandon Cart + Start Recovery Workflow
+        ├── Feb 16 → Add Tag "Masterclass 0226 - Feb 16" ──┐
+        ├── Feb 18 → Add Tag "Masterclass 0226 - Feb 18" ──┤
+        └── None → End                                      │
+                                                            │
+                    ┌───────────────────────────────────────┘
+                    │
+                    ▼
+FLOW 2 - Abandon Cart Check
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Trigger: Tag Added "Masterclass 0226 - Feb 16" OR "Masterclass 0226 - Feb 18"
+  │
+  ├── Wait 15 min
+  │
+  └── Condition: Check VIP/Free
+        ├── VIP Purchased → End
+        ├── Free Confirmed → End
+        └── None → Move to Abandon Cart + Start Recovery Workflow
 ```
 
-> **Note:** Yes, you have to duplicate the "Check VIP/Free" condition in each branch. This is how GHL works - actions after conditions must go inside branches.
+> **Benefit:** No duplicated logic. Flow 2 handles abandon cart for both dates with a single set of actions.
 
 ---
 
