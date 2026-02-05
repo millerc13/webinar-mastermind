@@ -95,10 +95,18 @@ Go to: **Payments → Products → Add Product**
 - Price: `$27.00`
 - Description:
   ```
+  Upgrade to VIP and get direct access to Todd after the masterclass!
+
   Includes:
-  - Todd's "It's Just Real Estate Dummy" eBook
-  - Recorded replay access
-  - 30-minute private Q&A session with Todd
+  - 30 Minutes of Private Q&A with Todd in an intimate group setting (limited to 20 people)
+  - Todd's eBook: "It's Just Real Estate Dummy" — your guide to getting started in real estate
+  - Recorded Replay Access so you can rewatch the masterclass anytime
+  - Network with like-minded entrepreneurs committed to growth
+  - Get personalized feedback that could shortcut months of trial and error
+
+  Todd charges $1,000/hour for private consulting. Get 30 minutes for just $27!
+
+  100% Money-Back Guarantee if you're not satisfied.
   ```
 
 ---
