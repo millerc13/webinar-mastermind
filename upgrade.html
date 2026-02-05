@@ -811,19 +811,10 @@
             const fullName = `${firstName} ${lastName}`.trim();
             const checkoutParams = new URLSearchParams();
 
-            // GHL checkout form field parameters (multiple formats for compatibility)
-            checkoutParams.set('name', fullName);
+            // GHL checkout form field parameters
             checkoutParams.set('full_name', fullName);
-            checkoutParams.set('first_name', firstName);
-            checkoutParams.set('last_name', lastName);
             checkoutParams.set('email', email);
             checkoutParams.set('phone', phone);
-            // GHL contact prefill format
-            checkoutParams.set('contact.name', fullName);
-            checkoutParams.set('contact.first_name', firstName);
-            checkoutParams.set('contact.last_name', lastName);
-            checkoutParams.set('contact.email', email);
-            checkoutParams.set('contact.phone', phone);
 
             // Append params to URL
             const separator = url.includes('?') ? '&' : '?';
