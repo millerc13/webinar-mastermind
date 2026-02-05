@@ -508,6 +508,139 @@
                 font-size: 1.5rem;
             }
         }
+
+        /* ========== CHECKOUT IFRAME MODAL ========== */
+        .checkout-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .checkout-modal-container {
+            background: var(--dark-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            height: 90vh;
+            max-height: 700px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 102, 255, 0.2);
+        }
+
+        .checkout-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .checkout-modal-close:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+        }
+
+        .checkout-modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--glass-border);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.05) 100%);
+        }
+
+        .checkout-modal-header h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .checkout-iframe-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkout-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark-card);
+            z-index: 1;
+        }
+
+        .checkout-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--glass-border);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: checkoutSpin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes checkoutSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .checkout-loading p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        #checkoutIframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+            transition: opacity 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-modal-container {
+                max-width: 100%;
+                height: 100vh;
+                max-height: none;
+                border-radius: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -630,12 +763,30 @@
         </div>
     </footer>
 
+    <!-- Checkout Iframe Modal -->
+    <div id="checkoutModal" class="checkout-modal">
+        <button class="checkout-modal-close" onclick="closeCheckoutModal()">&times;</button>
+        <div class="checkout-modal-container">
+            <div class="checkout-modal-header">
+                <h3 id="checkoutModalTitle">Complete Your VIP Purchase</h3>
+            </div>
+            <div class="checkout-iframe-wrapper">
+                <div class="checkout-loading" id="checkoutLoading">
+                    <div class="checkout-spinner"></div>
+                    <p>Loading checkout...</p>
+                </div>
+                <iframe id="checkoutIframe" src="" frameborder="0" allowpaymentrequest></iframe>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const firstName = urlParams.get('firstName') || 'Friend';
         const lastName = urlParams.get('lastName') || '';
         const email = urlParams.get('email') || '';
+        const phone = urlParams.get('phone') || '';
         const webinarDate = urlParams.get('webinarDate') || '';
 
         // Update the page with user info
@@ -644,12 +795,77 @@
         // Build query string for passing to confirmation page
         const queryString = `?firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}&email=${encodeURIComponent(email)}&webinarDate=${encodeURIComponent(webinarDate)}`;
 
+        // ========== GHL CHECKOUT URL ==========
+        // TODO: Replace with your actual GHL checkout page URL
+        const VIP_CHECKOUT_URL = 'YOUR_GHL_CHECKOUT_URL_HERE';
+
+        // ========== CHECKOUT MODAL FUNCTIONS ==========
+        function showCheckoutModal(url) {
+            const modal = document.getElementById('checkoutModal');
+            const iframe = document.getElementById('checkoutIframe');
+            const loading = document.getElementById('checkoutLoading');
+
+            loading.style.display = 'flex';
+            iframe.style.opacity = '0';
+
+            // Build checkout URL with pre-filled contact info
+            const fullName = `${firstName} ${lastName}`.trim();
+            const checkoutParams = new URLSearchParams();
+
+            // GHL checkout form field parameters
+            checkoutParams.set('name', fullName);
+            checkoutParams.set('first_name', firstName);
+            checkoutParams.set('last_name', lastName);
+            checkoutParams.set('email', email);
+            if (phone) checkoutParams.set('phone', phone);
+
+            // Append params to URL
+            const separator = url.includes('?') ? '&' : '?';
+            const fullUrl = url + separator + checkoutParams.toString();
+
+            iframe.src = fullUrl;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Hide loading when iframe loads
+            iframe.onload = function() {
+                loading.style.display = 'none';
+                iframe.style.opacity = '1';
+            };
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkoutModal');
+            const iframe = document.getElementById('checkoutIframe');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            // Clear iframe after animation
+            setTimeout(() => {
+                iframe.src = '';
+            }, 300);
+        }
+
+        // Close modal on overlay click
+        document.getElementById('checkoutModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCheckoutModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCheckoutModal();
+            }
+        });
+
         // VIP Upgrade button handler
         document.getElementById('upgrade-btn').addEventListener('click', function() {
-            // In Go High Level, replace this with actual payment processing
-            // After payment, redirect to confirmation page
-            alert('Redirecting to payment...');
-            // window.location.href = 'YOUR_PAYMENT_LINK' + queryString;
+            if (VIP_CHECKOUT_URL === 'YOUR_GHL_CHECKOUT_URL_HERE') {
+                alert('Checkout URL not configured. Please set VIP_CHECKOUT_URL in the script.');
+                return;
+            }
+            showCheckoutModal(VIP_CHECKOUT_URL);
         });
 
         // Skip upgrade button handler
