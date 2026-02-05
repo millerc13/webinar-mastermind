@@ -278,11 +278,17 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
 **Actions:**
 
 ```
-1. IF/ELSE (Add date-specific VIP tag)
-   ├── IF Tag = "Masterclass 0226 - Feb 16"
-   │   └── Add Tag: "Masterclass 0226 - VIP - Feb 16"
-   └── IF Tag = "Masterclass 0226 - Feb 18"
-       └── Add Tag: "Masterclass 0226 - VIP - Feb 18"
+1. Condition: "Add Date-Specific VIP Tag"
+   ├── Branch: "Feb 16 VIP"
+   │   - Condition: Custom Field "Masterclass 0226 - Date" = "Feb 16, 2026"
+   │   - Action: Add Tag → "Masterclass 0226 - VIP - Feb 16"
+   │
+   ├── Branch: "Feb 18 VIP"
+   │   - Condition: Custom Field "Masterclass 0226 - Date" = "Feb 18, 2026"
+   │   - Action: Add Tag → "Masterclass 0226 - VIP - Feb 18"
+   │
+   └── Branch: "None"
+       - Leave empty (edge case)
 
 2. Update Custom Field: Masterclass 0226 - VIP Status = "VIP"
 
@@ -696,7 +702,39 @@ document.getElementById('skip-upgrade').addEventListener('click', async function
    - `[REPLAY_LINK]` → Replay video link (after the event)
    - `[Q&A_ZOOM_LINK]` → Private Q&A Zoom link
    - `[Q&A DATE]` and `[Q&A TIME]` → Private Q&A details
+   - `[GOOGLE_CALENDAR_LINK]` → See calendar links below
+   - `[YAHOO_CALENDAR_LINK]` → See calendar links below
 7. Save the template
+
+### Calendar Links (Add to Calendar Buttons)
+
+**For Feb 16, 2026 @ 7PM ET:**
+
+Google Calendar:
+```
+https://calendar.google.com/calendar/render?action=TEMPLATE&text=Todd%27s%20Wealth%20Masterclass&dates=20260216T190000/20260216T210000&details=Join%20the%20live%20masterclass%20here%3A%20YOUR_ZOOM_LINK&ctz=America/New_York
+```
+
+Yahoo Calendar:
+```
+https://calendar.yahoo.com/?v=60&title=Todd%27s%20Wealth%20Masterclass&st=20260216T190000&et=20260216T210000&desc=Join%20the%20live%20masterclass%20here%3A%20YOUR_ZOOM_LINK
+```
+
+---
+
+**For Feb 18, 2026 @ 7PM ET:**
+
+Google Calendar:
+```
+https://calendar.google.com/calendar/render?action=TEMPLATE&text=Todd%27s%20Wealth%20Masterclass&dates=20260218T190000/20260218T210000&details=Join%20the%20live%20masterclass%20here%3A%20YOUR_ZOOM_LINK&ctz=America/New_York
+```
+
+Yahoo Calendar:
+```
+https://calendar.yahoo.com/?v=60&title=Todd%27s%20Wealth%20Masterclass&st=20260218T190000&et=20260218T210000&desc=Join%20the%20live%20masterclass%20here%3A%20YOUR_ZOOM_LINK
+```
+
+> **Note:** Replace `YOUR_ZOOM_LINK` in the calendar links with your actual Zoom URL (URL encoded). Or use GHL conditional logic to show the correct date's calendar link based on `{{ contact.masterclass_0226__date }}`.
 
 ### Template Features:
 - Light mode design (works with Gmail/email client overrides)
