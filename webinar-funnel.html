@@ -2133,7 +2133,7 @@
                     // Redirect to upgrade page
                     // Detect base path from current URL (works for both local and GHL)
                     const basePath = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '');
-                    const upgradeUrl = `${basePath}/upgrade?firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}&email=${encodeURIComponent(formData.email)}&webinarDate=${encodeURIComponent(formData.webinarDate)}`;
+                    const upgradeUrl = `${basePath}/upgrade?firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}&email=${encodeURIComponent(formData.email)}&phone=${encodeURIComponent(formData.phone)}&webinarDate=${encodeURIComponent(formData.webinarDate)}`;
                     window.location.href = upgradeUrl;
                 } else {
                     throw new Error(result.error || 'Registration failed');
