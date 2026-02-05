@@ -125,10 +125,10 @@ Go to: **Automation → Workflows → Create Workflow**
 
 **Trigger:** Tag Added → `Masterclass 0226 - Registered`
 
-> **Important:** NO confirmation email is sent here. The user still needs to complete registration by either:
+> **Important:** NO confirmation email is sent here. The confirmation is sent by:
 > - Purchasing VIP → VIP Welcome email (Workflow 2)
 > - Clicking "No thanks" → Confirmation email (Workflow 3)
-> - Abandoning → Abandon Cart recovery (Workflow 4)
+> - Not clicking either → Auto-confirmed as free after 15 min (Workflow 3)
 
 ---
 
@@ -140,9 +140,11 @@ Go to: **Automation → Workflows → Create Workflow**
 
 ---
 
-**Action 2: Condition (Add Date-Specific Tag + Abandon Cart Check)**
+**Action 2: Condition (Add Date-Specific Tag + Auto-Confirm Check)**
 
-> In GHL, actions after a condition must go inside branches. So we add the date tag, wait, and abandon cart check inside each branch.
+> In GHL, actions after a condition must go inside branches. So we add the date tag, wait, and check inside each branch.
+>
+> **Important:** If user doesn't click VIP or "No thanks", they still get the free registration after 10 minutes. This ensures non-tech-savvy users don't miss out.
 
 1. Click **+ Add Action** → **Condition**
 2. **Action Name:** `Check Webinar Date`
@@ -161,7 +163,7 @@ Go to: **Automation → Workflows → Create Workflow**
 **Inside Feb 16, 2026 branch, add these actions:**
 
 1. **Add Tag** → `Masterclass 0226 - Feb 16`
-2. **Wait** → `15 minutes`
+2. **Wait** → `10 minutes`
 3. **Condition** → `Check VIP or Free`
    - **Branch: VIP Purchased**
      - Select: `Contact Tag`
@@ -173,9 +175,9 @@ Go to: **Automation → Workflows → Create Workflow**
      - Operator: `Is`
      - Value: `Masterclass 0226 - Free Confirmed`
      - Inside: Leave empty (ends)
-   - **None Branch (Abandon Cart):**
-     - Add: **Update Opportunity Stage** → Pipeline: `Masterclass 0226 - Registration` → Stage: `Abandon Cart`
-     - Add: **Add to Workflow** → `Masterclass 0226 - Abandon Cart Recovery`
+   - **None Branch (Auto-Confirm Free):**
+     - Add: **Add Tag** → `Masterclass 0226 - Free Confirmed`
+     - _(This triggers Workflow 3, which sends the confirmation email)_
 
 ---
 
@@ -190,7 +192,7 @@ Go to: **Automation → Workflows → Create Workflow**
 **Inside Feb 18, 2026 branch, add these actions (same as Feb 16):**
 
 1. **Add Tag** → `Masterclass 0226 - Feb 18`
-2. **Wait** → `15 minutes`
+2. **Wait** → `10 minutes`
 3. **Condition** → `Check VIP or Free`
    - **Branch: VIP Purchased**
      - Select: `Contact Tag`
@@ -202,9 +204,9 @@ Go to: **Automation → Workflows → Create Workflow**
      - Operator: `Is`
      - Value: `Masterclass 0226 - Free Confirmed`
      - Inside: Leave empty (ends)
-   - **None Branch (Abandon Cart):**
-     - Add: **Update Opportunity Stage** → Pipeline: `Masterclass 0226 - Registration` → Stage: `Abandon Cart`
-     - Add: **Add to Workflow** → `Masterclass 0226 - Abandon Cart Recovery`
+   - **None Branch (Auto-Confirm Free):**
+     - Add: **Add Tag** → `Masterclass 0226 - Free Confirmed`
+     - _(This triggers Workflow 3, which sends the confirmation email)_
 
 ---
 
@@ -212,8 +214,10 @@ Go to: **Automation → Workflows → Create Workflow**
 
 For contacts with no date set (edge case):
 
-1. **Wait** → `15 minutes`
-2. **Condition** → `Check VIP or Free` (same structure as above)
+1. **Wait** → `10 minutes`
+2. **Condition** → `Check VIP or Free`
+   - VIP/Free Confirmed branches: Leave empty (ends)
+   - **None Branch:** Add Tag → `Masterclass 0226 - Free Confirmed`
 
 ---
 
@@ -228,29 +232,29 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
         │
         ├── Feb 16, 2026:
         │     ├── Add Tag → Masterclass 0226 - Feb 16
-        │     ├── Wait 15 min
+        │     ├── Wait 10 min
         │     └── Condition: Check VIP/Free
         │           ├── VIP → End
         │           ├── Free Confirmed → End
-        │           └── None → Abandon Cart + Recovery Workflow
+        │           └── None → Add Tag "Free Confirmed" (auto-confirm)
         │
         ├── Feb 18, 2026:
         │     ├── Add Tag → Masterclass 0226 - Feb 18
-        │     ├── Wait 15 min
+        │     ├── Wait 10 min
         │     └── Condition: Check VIP/Free
         │           ├── VIP → End
         │           ├── Free Confirmed → End
-        │           └── None → Abandon Cart + Recovery Workflow
+        │           └── None → Add Tag "Free Confirmed" (auto-confirm)
         │
         └── None:
-              ├── Wait 15 min
+              ├── Wait 10 min
               └── Condition: Check VIP/Free
                     ├── VIP → End
                     ├── Free Confirmed → End
-                    └── None → Abandon Cart + Recovery Workflow
+                    └── None → Add Tag "Free Confirmed" (auto-confirm)
 ```
 
-> **Note:** NO email is sent in this workflow. Emails are sent by Workflow 2 (VIP Welcome) or Workflow 3 (Free Confirmation) based on the user's choice on the upgrade page.
+> **Note:** If user doesn't click either button on upgrade page, they auto-confirm as free after 15 minutes. Adding the "Free Confirmed" tag triggers Workflow 3, which sends the confirmation email.
 
 ---
 
@@ -335,11 +339,13 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
 
 ---
 
-### WORKFLOW 4: Abandon Cart Recovery
+### WORKFLOW 4: Abandon Cart Recovery (Optional - VIP Checkout)
 
 **Name:** `Masterclass 0226 - Abandon Cart Recovery`
 
 **Trigger:** Pipeline Stage Changed to "Abandon Cart" (in Masterclass 0226 - Registration pipeline)
+
+> **Note:** Since registration now auto-confirms free users, this workflow is mainly for VIP checkout abandonment (if someone starts VIP payment but doesn't complete). You can manually move contacts to "Abandon Cart" stage to trigger this, or integrate with your payment processor to detect abandoned VIP checkouts.
 
 **Actions:**
 
@@ -802,7 +808,7 @@ Use this to track your progress:
 - [ ] Test registration → GHL contact created
 - [ ] Test VIP purchase → correct tags applied
 - [ ] Test "No thanks" click → Free Confirmed tag applied
-- [ ] Test abandon cart (wait 15 min) → moves to Abandon Cart stage
+- [ ] Test auto-confirm (wait 10 min without clicking) → gets Free Confirmed tag + email
 - [ ] Verify reminder workflow timing
 - [ ] Test full flow end-to-end
 
