@@ -136,7 +136,7 @@ Go to: **Automation → Workflows → Create Workflow**
 > **Important:** NO confirmation email is sent here. The confirmation is sent by:
 > - Purchasing VIP → VIP Welcome email (Workflow 2)
 > - Clicking "No thanks" → Confirmation email (Workflow 3)
-> - Not clicking either → Auto-confirmed as free after 15 min (Workflow 3)
+> - Not clicking either → Auto-confirmed as free after 10 min (Workflow 3)
 
 ---
 
@@ -263,7 +263,7 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
                     └── None → Add Tag "Free Confirmed" (auto-confirm)
 ```
 
-> **Note:** If user doesn't click either button on upgrade page, they auto-confirm as free after 15 minutes. Adding the "Free Confirmed" tag triggers Workflow 3, which sends the confirmation email.
+> **Note:** If user doesn't click either button on upgrade page, they auto-confirm as free after 10 minutes. Adding the "Free Confirmed" tag triggers Workflow 3, which sends the confirmation email.
 
 ---
 
@@ -614,8 +614,12 @@ const response = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
 
 Your upgrade page (`upgrade.html`) triggers tags via the Vercel API.
 
-**When VIP is purchased:**
-- GHL handles this automatically via payment trigger (Workflow 2)
+**VIP Checkout URL:** `https://webinar.maxxedout.com/vip-checkout`
+
+**When "Yes! Upgrade Me to VIP" is clicked:**
+- Opens GHL checkout in an iframe modal
+- Autofills: `full_name`, `email`, `phone` from URL params
+- After payment, GHL triggers Workflow 2 automatically
 
 **When "No thanks" is clicked:**
 - The `upgrade.html` page calls `/api/free-confirm` which adds the `Masterclass 0226 - Free Confirmed` tag
