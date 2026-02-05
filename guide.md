@@ -124,13 +124,7 @@ Go to: **Automation → Workflows → Create Workflow**
 
 > The Vercel API creates the contact and adds this tag via GHL API. When the tag is added, this workflow fires.
 
-**Using GHL Advanced Builder with Two Flows:**
-
-> This workflow uses two separate flows within the same workflow. The first flow handles registration, the second flow handles abandon cart checking. This avoids duplicating logic.
-
----
-
-## FLOW 1: Registration Flow
+**Single Flow Structure (Step-by-Step in GHL):**
 
 **Trigger:** Tag Added → `Masterclass 0226 - Registered`
 
@@ -199,91 +193,86 @@ TEXT THEM NOW!
 
 ---
 
-**Action 7: Condition (Add Date-Specific Tag)**
+**Action 7: Condition (Add Date-Specific Tag + Abandon Cart Check)**
 
-This adds the tag that triggers the reminder workflow AND Flow 2.
+> In GHL, actions after a condition must go inside branches. So we add the date tag, wait, and abandon cart check inside each branch.
 
 1. Click **+ Add Action** → **Condition**
-2. **Action Name:** `Add Date Tag`
+2. **Action Name:** `Check Webinar Date`
 3. **Scenario Recipe:** Select `Build Your Own`
 
+---
+
 **Branch 1 - Feb 16, 2026:**
+
 - Rename to: `Feb 16, 2026`
 - **Select:** `Contact Field`
 - **Field:** `Masterclass 0226 - Date`
 - **Operator:** `Is`
 - **Value:** `Feb 16, 2026`
-- **Inside this branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 16`
+
+**Inside Feb 16, 2026 branch, add these actions:**
+
+1. **Add Tag** → `Masterclass 0226 - Feb 16`
+2. **Wait** → `15 minutes`
+3. **Condition** → `Check VIP or Free`
+   - **Branch: VIP Purchased**
+     - Select: `Contact Tag`
+     - Operator: `Contains`
+     - Value: `Masterclass 0226 - VIP`
+     - Inside: Leave empty (ends)
+   - **Branch: Free Confirmed**
+     - Select: `Contact Tag`
+     - Operator: `Is`
+     - Value: `Masterclass 0226 - Free Confirmed`
+     - Inside: Leave empty (ends)
+   - **None Branch (Abandon Cart):**
+     - Add: **Update Opportunity Stage** → Pipeline: `Masterclass 0226 - Registration` → Stage: `Abandon Cart`
+     - Add: **Add to Workflow** → `Masterclass 0226 - Abandon Cart Recovery`
+
+---
 
 **Branch 2 - Feb 18, 2026:**
+
 - Click **+ Add Branch**, rename to: `Feb 18, 2026`
 - **Select:** `Contact Field`
 - **Field:** `Masterclass 0226 - Date`
 - **Operator:** `Is`
 - **Value:** `Feb 18, 2026`
-- **Inside this branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 18`
 
-**None Branch:** Leave empty
+**Inside Feb 18, 2026 branch, add these actions (same as Feb 16):**
 
----
-
-## FLOW 2: Abandon Cart Check
-
-**Add a second trigger to this workflow:**
-
-1. In the Advanced Builder, click **+ Add Trigger**
-2. Select **Tag Added**
-3. Choose tag: `Masterclass 0226 - Feb 16`
-4. Click **+ Add Trigger** again
-5. Select **Tag Added**
-6. Choose tag: `Masterclass 0226 - Feb 18`
-
-> Both tags trigger this same flow - it runs when either date tag is added.
-
----
-
-**Action 1: Wait**
-
-1. Click **+ Add Action** → **Wait**
-2. Wait for: `15 minutes`
+1. **Add Tag** → `Masterclass 0226 - Feb 18`
+2. **Wait** → `15 minutes`
+3. **Condition** → `Check VIP or Free`
+   - **Branch: VIP Purchased**
+     - Select: `Contact Tag`
+     - Operator: `Contains`
+     - Value: `Masterclass 0226 - VIP`
+     - Inside: Leave empty (ends)
+   - **Branch: Free Confirmed**
+     - Select: `Contact Tag`
+     - Operator: `Is`
+     - Value: `Masterclass 0226 - Free Confirmed`
+     - Inside: Leave empty (ends)
+   - **None Branch (Abandon Cart):**
+     - Add: **Update Opportunity Stage** → Pipeline: `Masterclass 0226 - Registration` → Stage: `Abandon Cart`
+     - Add: **Add to Workflow** → `Masterclass 0226 - Abandon Cart Recovery`
 
 ---
 
-**Action 2: Condition (Check VIP or Free Confirmed)**
+**None Branch:**
 
-1. Click **+ Add Action** → **Condition**
-2. **Action Name:** `Check if Purchased or Confirmed`
-3. **Scenario Recipe:** `Build Your Own`
+For contacts with no date set (edge case):
 
-**Branch 1 - VIP Purchased:**
-- Rename to: `VIP Purchased`
-- **Select:** `Contact Tag`
-- **Operator:** `Contains`
-- **Value:** `Masterclass 0226 - VIP`
-- **Inside this branch:** Leave empty (workflow ends)
-
-**Branch 2 - Free Confirmed:**
-- Click **+ Add Branch**, rename to: `Free Confirmed`
-- **Select:** `Contact Tag`
-- **Operator:** `Is`
-- **Value:** `Masterclass 0226 - Free Confirmed`
-- **Inside this branch:** Leave empty (workflow ends)
-
-**None Branch - Abandon Cart:**
-- **Inside this branch:**
-  1. Add action → **Update Opportunity Stage**
-     - Pipeline: `Masterclass 0226 - Registration`
-     - Stage: `Abandon Cart`
-  2. Add action → **Add to Workflow**
-     - Select: `Masterclass 0226 - Abandon Cart Recovery`
+1. **Wait** → `15 minutes`
+2. **Condition** → `Check VIP or Free` (same structure as above)
 
 ---
 
 ### Visual Flow Summary
 
 ```
-FLOW 1 - Registration
-━━━━━━━━━━━━━━━━━━━━━
 Trigger: Tag Added "Masterclass 0226 - Registered"
   │
   ├── Add to Pipeline → New Registration
@@ -294,26 +283,32 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
   ├── Internal Notification
   │
   └── Condition: Check Date
-        ├── Feb 16 → Add Tag "Masterclass 0226 - Feb 16" ──┐
-        ├── Feb 18 → Add Tag "Masterclass 0226 - Feb 18" ──┤
-        └── None → End                                      │
-                                                            │
-                    ┌───────────────────────────────────────┘
-                    │
-                    ▼
-FLOW 2 - Abandon Cart Check
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Trigger: Tag Added "Masterclass 0226 - Feb 16" OR "Masterclass 0226 - Feb 18"
-  │
-  ├── Wait 15 min
-  │
-  └── Condition: Check VIP/Free
-        ├── VIP Purchased → End
-        ├── Free Confirmed → End
-        └── None → Move to Abandon Cart + Start Recovery Workflow
+        │
+        ├── Feb 16, 2026:
+        │     ├── Add Tag → Masterclass 0226 - Feb 16
+        │     ├── Wait 15 min
+        │     └── Condition: Check VIP/Free
+        │           ├── VIP → End
+        │           ├── Free Confirmed → End
+        │           └── None → Abandon Cart + Recovery Workflow
+        │
+        ├── Feb 18, 2026:
+        │     ├── Add Tag → Masterclass 0226 - Feb 18
+        │     ├── Wait 15 min
+        │     └── Condition: Check VIP/Free
+        │           ├── VIP → End
+        │           ├── Free Confirmed → End
+        │           └── None → Abandon Cart + Recovery Workflow
+        │
+        └── None:
+              ├── Wait 15 min
+              └── Condition: Check VIP/Free
+                    ├── VIP → End
+                    ├── Free Confirmed → End
+                    └── None → Abandon Cart + Recovery Workflow
 ```
 
-> **Benefit:** No duplicated logic. Flow 2 handles abandon cart for both dates with a single set of actions.
+> **Note:** The "Check VIP/Free" condition is duplicated in each branch. This is required because GHL doesn't allow actions after a condition block - they must go inside branches.
 
 ---
 
