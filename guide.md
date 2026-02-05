@@ -96,7 +96,7 @@ Go to: **Payments → Products → Add Product**
 - Description:
   ```
   Includes:
-  - Todd's "Real Estate for Dummies" eBook
+  - Todd's "It's Just Real Estate Dummy" eBook
   - Recorded replay access
   - 30-minute private Q&A session with Todd
   ```
@@ -166,14 +166,14 @@ Go to: **Automation → Workflows → Create Workflow**
 2. **Wait** → `10 minutes`
 3. **Condition** → `Check VIP or Free`
    - **Branch: VIP Purchased**
-     - Select: `Contact Tag`
-     - Operator: `Contains`
-     - Value: `Masterclass 0226 - VIP`
+     - Select: `Custom Field` → `Masterclass 0226 - VIP Status`
+     - Operator: `Includes`
+     - Value: `VIP`
      - Inside: Leave empty (ends)
    - **Branch: Free Confirmed**
-     - Select: `Contact Tag`
-     - Operator: `Is`
-     - Value: `Masterclass 0226 - Free Confirmed`
+     - Select: `Custom Field` → `Masterclass 0226 - VIP Status`
+     - Operator: `Includes`
+     - Value: `Free`
      - Inside: Leave empty (ends)
    - **None Branch (Auto-Confirm Free):**
      - Add: **Add Tag** → `Masterclass 0226 - Free Confirmed`
@@ -195,14 +195,14 @@ Go to: **Automation → Workflows → Create Workflow**
 2. **Wait** → `10 minutes`
 3. **Condition** → `Check VIP or Free`
    - **Branch: VIP Purchased**
-     - Select: `Contact Tag`
-     - Operator: `Contains`
-     - Value: `Masterclass 0226 - VIP`
+     - Select: `Custom Field` → `Masterclass 0226 - VIP Status`
+     - Operator: `Includes`
+     - Value: `VIP`
      - Inside: Leave empty (ends)
    - **Branch: Free Confirmed**
-     - Select: `Contact Tag`
-     - Operator: `Is`
-     - Value: `Masterclass 0226 - Free Confirmed`
+     - Select: `Custom Field` → `Masterclass 0226 - VIP Status`
+     - Operator: `Includes`
+     - Value: `Free`
      - Inside: Leave empty (ends)
    - **None Branch (Auto-Confirm Free):**
      - Add: **Add Tag** → `Masterclass 0226 - Free Confirmed`
@@ -216,7 +216,8 @@ For contacts with no date set (edge case):
 
 1. **Wait** → `10 minutes`
 2. **Condition** → `Check VIP or Free`
-   - VIP/Free Confirmed branches: Leave empty (ends)
+   - **VIP Purchased:** Custom Field `Masterclass 0226 - VIP Status` Includes `VIP` → ends
+   - **Free Confirmed:** Custom Field `Masterclass 0226 - VIP Status` Includes `Free` → ends
    - **None Branch:** Add Tag → `Masterclass 0226 - Free Confirmed`
 
 ---
@@ -285,7 +286,7 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
    Body:
    - Welcome/confirmation message with Zoom link
    - Date/time: {{ contact.masterclass_0226__date }} @ 7PM ET
-   - "Real Estate for Dummies" eBook download link
+   - "It's Just Real Estate Dummy" eBook download link
    - Reminder: Replay will be sent after the live event
    - Reminder: Private Q&A details coming soon
 
@@ -449,7 +450,7 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
    │       Body:
    │       - Replay link
    │       - Private Q&A date/time
-   │       - eBook reminder (Real Estate for Dummies)
+   │       - eBook reminder (It's Just Real Estate Dummy)
    │
    └── ELSE (Free registrant):
        └── Send Email: "Thanks for attending!"
@@ -842,7 +843,7 @@ Use this to track your progress:
 - Outbound call/text all registrants after for ticket sales
 
 **VIP Offer ($27) includes:**
-- Todd's "Real Estate for Dummies" eBook
+- Todd's "It's Just Real Estate Dummy" eBook
 - Recorded replay access
 - 30-minute private Q&A session with Todd
 
