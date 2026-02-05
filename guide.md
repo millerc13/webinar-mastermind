@@ -126,53 +126,26 @@ Go to: **Automation → Workflows → Create Workflow**
 
 **Actions (Step-by-Step in GHL):**
 
----
-
-**Action 1: Add Condition (Date-Specific Tag)**
-
-1. Click **+ Add Action** → Select **Condition**
-2. **Action Name:** `Check Webinar Date`
-3. **Scenario Recipe:** Select `Build Your Own`
-4. **Set up Branch 1 (Feb 16):**
-   - Click on the **Branch** box
-   - Rename it to: `Feb 16`
-   - In **Select** dropdown: Choose `Contact Field`
-   - Select field: `Masterclass 0226 - Date`
-   - In **Select Operator**: Choose `Is`
-   - Value: `Feb 16, 2026`
-5. Click **+ Add Branch** for Branch 2 (Feb 18):
-   - Rename it to: `Feb 18`
-   - **Select:** `Contact Field`
-   - Select field: `Masterclass 0226 - Date`
-   - **Operator:** `Is`
-   - Value: `Feb 18, 2026`
-6. Click **Save Action**
-
-**Inside Feb 16 Branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 16`
-
-**Inside Feb 18 Branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 18`
-
-**Inside None Branch:** Leave empty (handles edge cases)
+> **Important:** In GHL, you can only add actions INSIDE condition branches, not after them. So we put the common actions first, then the condition last.
 
 ---
 
-**Action 2: Add to Pipeline**
+**Action 1: Add to Pipeline**
 
-1. Click **+ Add Action** (after the condition block, not inside a branch)
-2. Select **Add to Workflow Pipeline**
-3. Pipeline: `Masterclass 0226 - Registration`
-4. Stage: `New Registration`
+1. Click **+ Add Action** → Select **Add to Workflow Pipeline**
+2. Pipeline: `Masterclass 0226 - Registration`
+3. Stage: `New Registration`
 
 ---
 
-**Action 3: Add Tag**
+**Action 2: Add Tag (Setter Outreach)**
 
 1. Click **+ Add Action** → **Add Tag**
 2. Tag: `Setter - Needs Outreach`
 
 ---
 
-**Action 4: Send Email**
+**Action 3: Send Email (Confirmation)**
 
 1. Click **+ Add Action** → **Send Email**
 2. Subject: `You're in! Here's your Zoom link for Todd's Masterclass`
@@ -184,14 +157,14 @@ Go to: **Automation → Workflows → Create Workflow**
 
 ---
 
-**Action 5: Wait**
+**Action 4: Wait**
 
 1. Click **+ Add Action** → **Wait**
 2. Wait for: `2 minutes`
 
 ---
 
-**Action 6: Send SMS**
+**Action 5: Send SMS (Qualifying Question)**
 
 1. Click **+ Add Action** → **Send SMS**
 2. Message:
@@ -203,7 +176,7 @@ Reply and let me know!
 
 ---
 
-**Action 7: Internal Notification**
+**Action 6: Internal Notification**
 
 1. Click **+ Add Action** → **Internal Notification** (or Send Email to your team)
 2. Send to: Your team email or phone
@@ -220,41 +193,112 @@ TEXT THEM NOW!
 
 ---
 
-**Action 8: Wait**
+**Action 7: Condition (Add Date-Specific Tag)**
 
-1. Click **+ Add Action** → **Wait**
-2. Wait for: `15 minutes`
+This adds the tag that triggers the reminder workflow for their specific date.
+
+1. Click **+ Add Action** → **Condition**
+2. **Action Name:** `Add Date Tag`
+3. **Scenario Recipe:** Select `Build Your Own`
+
+**Branch 1 - Feb 16, 2026:**
+- Click on the **Branch** box, rename to: `Feb 16, 2026`
+- **Select:** `Contact Field`
+- **Field:** `Masterclass 0226 - Date`
+- **Operator:** `Is`
+- **Value:** `Feb 16, 2026`
+- **Inside this branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 16`
+- **Then add:** Wait → `15 minutes`
+- **Then add:** Another Condition (see Action 8 below - you'll duplicate it here)
+
+**Branch 2 - Feb 18, 2026:**
+- Click **+ Add Branch**, rename to: `Feb 18, 2026`
+- **Select:** `Contact Field`
+- **Field:** `Masterclass 0226 - Date`
+- **Operator:** `Is`
+- **Value:** `Feb 18, 2026`
+- **Inside this branch:** Add action → **Add Tag** → `Masterclass 0226 - Feb 18`
+- **Then add:** Wait → `15 minutes`
+- **Then add:** Another Condition (see Action 8 below - you'll duplicate it here)
+
+**None Branch:**
+- **Inside this branch:** Wait → `15 minutes`
+- **Then add:** Another Condition (see Action 8 below)
 
 ---
 
-**Action 9: Add Condition (Abandon Cart Check)**
+**Action 8: Condition (Abandon Cart Check) - Add inside EACH branch above**
+
+Inside each of the 3 branches from Action 7, add this condition:
 
 1. Click **+ Add Action** → **Condition**
 2. **Action Name:** `Check if Purchased or Confirmed`
 3. **Scenario Recipe:** `Build Your Own`
 
-**Branch 1 - VIP Purchased (Stop):**
+**Branch 1 - VIP Purchased:**
 - Rename to: `VIP Purchased`
 - **Select:** `Contact Tag`
 - **Operator:** `Contains`
-- Value: `Masterclass 0226 - VIP`
-- Inside this branch: Add **End Workflow** (or leave empty to stop)
+- **Value:** `Masterclass 0226 - VIP`
+- **Inside this branch:** Leave empty (workflow ends, they're VIP)
 
-**Branch 2 - Free Confirmed (Stop):**
-- Click **+ Add Branch**
-- Rename to: `Free Confirmed`
+**Branch 2 - Free Confirmed:**
+- Click **+ Add Branch**, rename to: `Free Confirmed`
 - **Select:** `Contact Tag`
 - **Operator:** `Is`
-- Value: `Masterclass 0226 - Free Confirmed`
-- Inside this branch: Add **End Workflow** (or leave empty)
+- **Value:** `Masterclass 0226 - Free Confirmed`
+- **Inside this branch:** Leave empty (workflow ends, they confirmed free)
 
-**None Branch (Abandon Cart):**
-- This is the ELSE - they didn't purchase or confirm free
-- Add action: **Update Opportunity Stage**
-  - Pipeline: `Masterclass 0226 - Registration`
-  - Stage: `Abandon Cart`
-- Add action: **Add to Workflow**
-  - Select: `Masterclass 0226 - Abandon Cart Recovery`
+**None Branch - Abandon Cart:**
+- This catches anyone who didn't take action
+- **Inside this branch:**
+  1. Add action → **Update Opportunity Stage**
+     - Pipeline: `Masterclass 0226 - Registration`
+     - Stage: `Abandon Cart`
+  2. Add action → **Add to Workflow**
+     - Select: `Masterclass 0226 - Abandon Cart Recovery`
+
+---
+
+### Visual Flow Summary
+
+```
+Start (Tag Added: Masterclass 0226 - Registered)
+  │
+  ├── Add to Pipeline → New Registration
+  ├── Add Tag → Setter - Needs Outreach
+  ├── Send Email → Confirmation
+  ├── Wait 2 min
+  ├── Send SMS → Qualifying Question
+  ├── Internal Notification
+  │
+  └── Condition: Check Date
+        │
+        ├── Feb 16, 2026 Branch:
+        │     ├── Add Tag → Masterclass 0226 - Feb 16
+        │     ├── Wait 15 min
+        │     └── Condition: Check VIP/Free
+        │           ├── VIP Purchased → End
+        │           ├── Free Confirmed → End
+        │           └── None → Move to Abandon Cart + Start Recovery Workflow
+        │
+        ├── Feb 18, 2026 Branch:
+        │     ├── Add Tag → Masterclass 0226 - Feb 18
+        │     ├── Wait 15 min
+        │     └── Condition: Check VIP/Free
+        │           ├── VIP Purchased → End
+        │           ├── Free Confirmed → End
+        │           └── None → Move to Abandon Cart + Start Recovery Workflow
+        │
+        └── None Branch:
+              ├── Wait 15 min
+              └── Condition: Check VIP/Free
+                    ├── VIP Purchased → End
+                    ├── Free Confirmed → End
+                    └── None → Move to Abandon Cart + Start Recovery Workflow
+```
+
+> **Note:** Yes, you have to duplicate the "Check VIP/Free" condition in each branch. This is how GHL works - actions after conditions must go inside branches.
 
 ---
 
