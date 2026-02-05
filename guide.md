@@ -125,6 +125,11 @@ Go to: **Automation → Workflows → Create Workflow**
 
 **Trigger:** Tag Added → `Masterclass 0226 - Registered`
 
+> **Important:** NO confirmation email is sent here. The user still needs to complete registration by either:
+> - Purchasing VIP → VIP Welcome email (Workflow 2)
+> - Clicking "No thanks" → Confirmation email (Workflow 3)
+> - Abandoning → Abandon Cart recovery (Workflow 4)
+
 ---
 
 **Action 1: Add to Pipeline**
@@ -135,38 +140,7 @@ Go to: **Automation → Workflows → Create Workflow**
 
 ---
 
-**Action 2: Send Email (Confirmation)**
-
-1. Click **+ Add Action** → **Send Email**
-2. Subject: `You're in! Here's your Zoom link for Todd's Masterclass`
-3. Body should include:
-   - Welcome message
-   - Zoom link (you'll add this manually)
-   - Date/time: Use merge field `{{ contact.masterclass_0226__date }}` @ 7PM ET
-   - Add to Calendar link
-
----
-
-**Action 3: Wait**
-
-1. Click **+ Add Action** → **Wait**
-2. Wait for: `2 minutes`
-
----
-
-**Action 4: Send SMS (Qualifying Question)**
-
-1. Click **+ Add Action** → **Send SMS**
-2. Message:
-```
-Hey {{contact.first_name}}! You're confirmed for Todd's FREE masterclass.
-Quick question - what's the #1 thing you want to improve in your financial life?
-Reply and let me know!
-```
-
----
-
-**Action 5: Condition (Add Date-Specific Tag + Abandon Cart Check)**
+**Action 2: Condition (Add Date-Specific Tag + Abandon Cart Check)**
 
 > In GHL, actions after a condition must go inside branches. So we add the date tag, wait, and abandon cart check inside each branch.
 
@@ -249,9 +223,6 @@ For contacts with no date set (edge case):
 Trigger: Tag Added "Masterclass 0226 - Registered"
   │
   ├── Add to Pipeline → New Registration
-  ├── Send Email → Confirmation
-  ├── Wait 2 min
-  ├── Send SMS → Qualifying Question
   │
   └── Condition: Check Date
         │
@@ -279,7 +250,7 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
                     └── None → Abandon Cart + Recovery Workflow
 ```
 
-> **Note:** The "Check VIP/Free" condition is duplicated in each branch. This is required because GHL doesn't allow actions after a condition block - they must go inside branches.
+> **Note:** NO email is sent in this workflow. Emails are sent by Workflow 2 (VIP Welcome) or Workflow 3 (Free Confirmation) based on the user's choice on the upgrade page.
 
 ---
 
@@ -288,6 +259,8 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
 **Name:** `Masterclass 0226 - VIP Purchase`
 
 **Trigger:** Payment Received (Product = "Masterclass 0226 - VIP Upgrade")
+
+> This serves as their registration confirmation + VIP welcome in one email.
 
 **Actions:**
 
@@ -303,14 +276,23 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
 3. Move Pipeline Stage: "VIP Purchased"
 
 4. Send Email: "Welcome VIP! Here's Your eBook"
+   Template: emails/vip-welcome.html
    Subject: "🎉 You're a VIP! Here's your eBook + what's next"
    Body:
-   - Thank you message
+   - Welcome/confirmation message with Zoom link
+   - Date/time: {{ contact.masterclass_0226__date }} @ 7PM ET
    - "Real Estate for Dummies" eBook download link
    - Reminder: Replay will be sent after the live event
    - Reminder: Private Q&A details coming soon
 
-5. Internal Notification:
+5. Wait: 2 minutes
+
+6. Send SMS:
+   "Hey {{contact.first_name}}! You're confirmed as a VIP for Todd's masterclass!
+   Quick question - what's the #1 thing you want to improve in your financial life?
+   Reply and let me know!"
+
+7. Internal Notification:
    "💰 VIP PURCHASE!
    {{contact.first_name}} {{contact.last_name}} upgraded to VIP!
    Email: {{contact.email}}
@@ -325,12 +307,30 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
 
 **Trigger:** Tag Added = "Masterclass 0226 - Free Confirmed"
 
+> This tag is added by the `/api/free-confirm` endpoint when the user clicks "No thanks, continue with free registration" on the upgrade page.
+
 **Actions:**
 
 ```
 1. Move Pipeline Stage: "Free Confirmed"
 
 2. Update Custom Field: Masterclass 0226 - VIP Status = "Free"
+
+3. Send Email: "You're Registered!"
+   Subject: "You're in! Here's your Zoom link for Todd's Masterclass"
+   Template: emails/confirmation.html
+   Body should include:
+   - Welcome message
+   - Zoom link
+   - Date/time: Use merge field {{ contact.masterclass_0226__date }} @ 7PM ET
+   - Add to Calendar link
+
+4. Wait: 2 minutes
+
+5. Send SMS:
+   "Hey {{contact.first_name}}! You're confirmed for Todd's FREE masterclass.
+   Quick question - what's the #1 thing you want to improve in your financial life?
+   Reply and let me know!"
 ```
 
 ---
@@ -597,29 +597,52 @@ const response = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
 
 ## 9. UPGRADE PAGE INTEGRATION
 
-Your upgrade page needs to trigger tags:
+Your upgrade page (`upgrade.html`) triggers tags via the Vercel API.
 
 **When VIP is purchased:**
-- GHL handles this automatically via payment trigger
+- GHL handles this automatically via payment trigger (Workflow 2)
 
 **When "No thanks" is clicked:**
-- Add this to your upgrade page button:
+- The `upgrade.html` page calls `/api/free-confirm` which adds the `Masterclass 0226 - Free Confirmed` tag
+- This triggers Workflow 3, which sends the confirmation email
+
+**Vercel API Endpoint:** `/api/free-confirm.js`
 
 ```javascript
-// When "No thanks, continue free" is clicked
-async function handleFreeConfirm() {
-  await fetch('YOUR_GHL_WEBHOOK_URL', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email: userEmail, // from URL params
-      tags: ['Masterclass 0226 - Free Confirmed']
-    })
-  });
+// This endpoint is called when user clicks "No thanks, continue with free registration"
+// It finds the contact by email and adds the "Masterclass 0226 - Free Confirmed" tag
 
-  // Redirect to confirmation page
-  window.location.href = '/confirmation.html';
-}
+POST /api/free-confirm
+Body: { "email": "user@example.com" }
+
+// The tag triggers Workflow 3 which:
+// 1. Moves contact to "Free Confirmed" pipeline stage
+// 2. Sends the confirmation email
+// 3. Sends the qualifying SMS
+```
+
+**upgrade.html skip button code (already implemented):**
+
+```javascript
+document.getElementById('skip-upgrade').addEventListener('click', async function() {
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Processing...';
+
+    try {
+        // Call API to add "Free Confirmed" tag to the contact
+        await fetch('/api/free-confirm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+        });
+    } catch (error) {
+        console.error('Error confirming free registration:', error);
+    }
+
+    // Redirect to confirmation page
+    window.location.href = '/confirmation' + queryString;
+});
 ```
 
 ---
@@ -630,8 +653,8 @@ async function handleFreeConfirm() {
 
 | File | Template Name in GHL | Used In |
 |------|---------------------|---------|
-| `emails/confirmation.html` | Masterclass 0226 - Confirmation | Workflow 1 |
-| `emails/vip-welcome.html` | Masterclass 0226 - VIP Welcome | Workflow 2 |
+| `emails/confirmation.html` | Masterclass 0226 - Confirmation | Workflow 3 (Free Confirmed) |
+| `emails/vip-welcome.html` | Masterclass 0226 - VIP Welcome | Workflow 2 (VIP Purchase) |
 | `emails/abandon-cart.html` | Masterclass 0226 - Abandon Cart | Workflow 4 |
 | `emails/reminder-72hr.html` | Masterclass 0226 - 72hr Reminder | Workflow 5/6 |
 | `emails/reminder-24hr.html` | Masterclass 0226 - 24hr Reminder | Workflow 5/6 |
