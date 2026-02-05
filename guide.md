@@ -624,21 +624,45 @@ async function handleFreeConfirm() {
 
 ---
 
-## 10. EMAIL TEMPLATES TO CREATE
+## 10. EMAIL TEMPLATES
 
-Create these in **Marketing → Emails → Templates**:
+**HTML templates are located in:** `emails/` folder
 
-| Template Name | Used In |
-|---------------|---------|
-| Masterclass 0226 - Confirmation | Workflow 1 |
-| Masterclass 0226 - VIP Welcome (eBook) | Workflow 2 |
-| Masterclass 0226 - Abandon Cart | Workflow 4 |
-| Masterclass 0226 - 72hr Reminder | Workflow 5/6 |
-| Masterclass 0226 - 24hr Reminder | Workflow 5/6 |
-| Masterclass 0226 - 1hr Reminder | Workflow 5/6 |
-| Masterclass 0226 - Attended (VIP) | Workflow 7 |
-| Masterclass 0226 - Attended (Free) | Workflow 7 |
-| Masterclass 0226 - No Show | Workflow 8 |
+| File | Template Name in GHL | Used In |
+|------|---------------------|---------|
+| `emails/confirmation.html` | Masterclass 0226 - Confirmation | Workflow 1 |
+| `emails/vip-welcome.html` | Masterclass 0226 - VIP Welcome | Workflow 2 |
+| `emails/abandon-cart.html` | Masterclass 0226 - Abandon Cart | Workflow 4 |
+| `emails/reminder-72hr.html` | Masterclass 0226 - 72hr Reminder | Workflow 5/6 |
+| `emails/reminder-24hr.html` | Masterclass 0226 - 24hr Reminder | Workflow 5/6 |
+| `emails/reminder-1hr.html` | Masterclass 0226 - 1hr Reminder | Workflow 5/6 |
+| `emails/post-webinar-attended-vip.html` | Masterclass 0226 - Attended (VIP) | Workflow 7 |
+| `emails/post-webinar-attended-free.html` | Masterclass 0226 - Attended (Free) | Workflow 7 |
+| `emails/no-show.html` | Masterclass 0226 - No Show | Workflow 8 |
+
+### How to Use the Templates in GHL:
+
+1. Open the HTML file in a browser or code editor
+2. Copy all the HTML code
+3. In GHL, go to **Marketing → Emails → Templates → Create**
+4. Switch to **Code/HTML view**
+5. Paste the HTML code
+6. Replace placeholders:
+   - `[ZOOM_LINK]` → Your actual Zoom link
+   - `[UPGRADE_LINK]` → Your VIP upgrade page URL
+   - `[EBOOK_DOWNLOAD_LINK]` → Link to Todd's eBook
+   - `[REPLAY_LINK]` → Replay video link (after the event)
+   - `[Q&A_ZOOM_LINK]` → Private Q&A Zoom link
+   - `[Q&A DATE]` and `[Q&A TIME]` → Private Q&A details
+7. Save the template
+
+### Template Features:
+- Light mode design (works with Gmail/email client overrides)
+- Table-based layout (email-safe)
+- Inline styles (no external CSS)
+- Matches webinar funnel branding (blue/cyan accents)
+- Mobile responsive
+- Merge fields: `{{contact.first_name}}`, `{{ contact.masterclass_0226__date }}`
 
 ---
 
