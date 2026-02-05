@@ -56,9 +56,6 @@ Create these tags:
 - `Masterclass 0226 - Attended`
 - `Masterclass 0226 - No Show`
 
-**Setter Tags (can be reused across events):**
-- `Setter - Needs Outreach`
-- `Setter - Contacted`
 
 > **Tag Naming Convention:**
 > - Event identifier: `Masterclass 0226`
@@ -138,14 +135,7 @@ Go to: **Automation → Workflows → Create Workflow**
 
 ---
 
-**Action 2: Add Tag (Setter Outreach)**
-
-1. Click **+ Add Action** → **Add Tag**
-2. Tag: `Setter - Needs Outreach`
-
----
-
-**Action 3: Send Email (Confirmation)**
+**Action 2: Send Email (Confirmation)**
 
 1. Click **+ Add Action** → **Send Email**
 2. Subject: `You're in! Here's your Zoom link for Todd's Masterclass`
@@ -157,14 +147,14 @@ Go to: **Automation → Workflows → Create Workflow**
 
 ---
 
-**Action 4: Wait**
+**Action 3: Wait**
 
 1. Click **+ Add Action** → **Wait**
 2. Wait for: `2 minutes`
 
 ---
 
-**Action 5: Send SMS (Qualifying Question)**
+**Action 4: Send SMS (Qualifying Question)**
 
 1. Click **+ Add Action** → **Send SMS**
 2. Message:
@@ -176,24 +166,7 @@ Reply and let me know!
 
 ---
 
-**Action 6: Internal Notification**
-
-1. Click **+ Add Action** → **Internal Notification** (or Send Email to your team)
-2. Send to: Your team email or phone
-3. Message:
-```
-🔥 NEW WEBINAR REGISTRATION
-Name: {{contact.first_name}} {{contact.last_name}}
-Phone: {{contact.phone}}
-Email: {{contact.email}}
-Date: {{ contact.masterclass_0226__date }}
-
-TEXT THEM NOW!
-```
-
----
-
-**Action 7: Condition (Add Date-Specific Tag + Abandon Cart Check)**
+**Action 5: Condition (Add Date-Specific Tag + Abandon Cart Check)**
 
 > In GHL, actions after a condition must go inside branches. So we add the date tag, wait, and abandon cart check inside each branch.
 
@@ -276,11 +249,9 @@ For contacts with no date set (edge case):
 Trigger: Tag Added "Masterclass 0226 - Registered"
   │
   ├── Add to Pipeline → New Registration
-  ├── Add Tag → Setter - Needs Outreach
   ├── Send Email → Confirmation
   ├── Wait 2 min
   ├── Send SMS → Qualifying Question
-  ├── Internal Notification
   │
   └── Condition: Check Date
         │
@@ -509,7 +480,6 @@ Trigger: Tag Added "Masterclass 0226 - Registered"
    "Hey {{contact.first_name}}, we missed you at Todd's masterclass!
    Want access to the replay? Reply YES and I'll send you the link."
 
-5. Add Tag: "Setter - Needs Outreach"
 ```
 
 ---
@@ -527,7 +497,6 @@ Go to: **Contacts → Smart Lists → Create**
 | Masterclass 0226 - All VIPs | Tag contains "Masterclass 0226 - VIP" |
 | Masterclass 0226 - Abandon Cart | Pipeline Stage = "Abandon Cart" AND Pipeline = "Masterclass 0226 - Registration" |
 | Masterclass 0226 - No Shows | Tag = "Masterclass 0226 - No Show" |
-| Setter Outreach Needed | Tag = "Setter - Needs Outreach" |
 
 ---
 
@@ -740,8 +709,6 @@ Use this to track your progress:
 - [ ] Create Tag: `Masterclass 0226 - Free Confirmed`
 - [ ] Create Tag: `Masterclass 0226 - Attended`
 - [ ] Create Tag: `Masterclass 0226 - No Show`
-- [ ] Create Tag: `Setter - Needs Outreach` (if not exists)
-- [ ] Create Tag: `Setter - Contacted` (if not exists)
 
 ### Pipeline & Product
 - [x] Create Pipeline: `Masterclass 0226 - Registration` with 7 stages ✅
@@ -818,7 +785,6 @@ Use this to track your progress:
 - Run ads 10-14 days before webinar
 - Use Meta Ad Library to research competitors (ads running 3-4+ months = proven)
 - 10-15 min before going live, rename Zoom to "STARTING NOW - Join Todd Live!" to trigger notifications
-- Have setters text back immediately after registration
 - Engage attendees during webinar (polls, questions, homework)
 - Outbound call/text all registrants after for ticket sales
 
