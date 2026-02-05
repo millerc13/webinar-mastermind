@@ -29,17 +29,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Phone is required' });
     }
 
-    // Tags for webinar registrants
+    // Tags for Masterclass 0226 registrants
     const tags = [
-      'mastermind-webinar',
-      'webinar-registered',
+      'Masterclass 0226 - Registered',  // Triggers Workflow 1
       'sms-consent'
     ];
-
-    // Add date-specific tag if provided
-    if (webinarDate) {
-      tags.push(`webinar-${webinarDate}`);
-    }
 
     // Create/update contact in GHL
     const ghlResponse = await fetch('https://services.leadconnectorhq.com/contacts/', {
@@ -56,7 +50,13 @@ export default async function handler(req, res) {
         email: email,
         phone: phone,
         tags: tags,
-        source: 'Webinar Masterclass Registration',
+        source: 'Masterclass 0226 Registration',
+        customFields: [
+          {
+            key: 'masterclass_0226__date',
+            field_value: webinarDate || ''
+          }
+        ],
       }),
     });
 
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
         const existingContactId = result.meta?.contactId;
 
         if (existingContactId) {
-          // Update existing contact with new tags
+          // Update existing contact with new tags and custom field
           await fetch(`https://services.leadconnectorhq.com/contacts/${existingContactId}`, {
             method: 'PUT',
             headers: {
@@ -89,6 +89,12 @@ export default async function handler(req, res) {
               tags: tags,
               firstName: firstName || undefined,
               lastName: lastName || undefined,
+              customFields: [
+                {
+                  key: 'masterclass_0226__date',
+                  field_value: webinarDate || ''
+                }
+              ],
             }),
           });
         }
