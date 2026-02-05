@@ -895,7 +895,7 @@ Use this to track your progress:
 **VIP Offer ($27) includes:**
 - Todd's "It's Just Real Estate Dummy" eBook
 - Recorded replay access
-- 30-minute private Q&A session with Todd
+- 30-minute private Q&A session with Todd (separate Zoom link, after main event ends)
 
 **Urgency tactics:**
 - "Limited to 20 VIP spots"
