@@ -152,6 +152,24 @@ export default async function handler(req, res) {
       } catch (oppError) {
         console.error('Opportunity creation error:', oppError);
       }
+
+      // Fire webhook to trigger the registration workflow
+      try {
+        await fetch('https://services.leadconnectorhq.com/hooks/ZTzlr9OKa82mgQ8vn680/webhook-trigger/SkIqx9xq4o01ZHbakdfu', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contactId: contactId,
+            email: email,
+            phone: phone,
+            firstName: firstName || '',
+            lastName: lastName || '',
+            webinarDate: webinarDate || '',
+          }),
+        });
+      } catch (webhookError) {
+        console.error('Webhook trigger error:', webhookError);
+      }
     }
 
     return res.status(200).json({
