@@ -79,20 +79,7 @@ export default async function handler(req, res) {
         contactId = result.meta?.contactId;
 
         if (contactId) {
-          // Remove the registration tag first so re-adding it triggers the workflow
-          await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}/tags`, {
-            method: 'DELETE',
-            headers: {
-              'Authorization': `Bearer ${process.env.GHL_API_KEY}`,
-              'Content-Type': 'application/json',
-              'Version': '2021-07-28',
-            },
-            body: JSON.stringify({
-              tags: ['Masterclass 0226 - Registered'],
-            }),
-          });
-
-          // Update existing contact with new date, then re-add tags to trigger workflow
+          // Update existing contact with new date
           await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}`, {
             method: 'PUT',
             headers: {
@@ -123,8 +110,9 @@ export default async function handler(req, res) {
       contactId = result.contact?.id;
     }
 
-    // Create Opportunity in the Masterclass Webinar pipeline
+    // Create Opportunity and trigger workflow webhook
     if (contactId) {
+      // Create Opportunity in the Masterclass Webinar pipeline
       try {
         await fetch('https://services.leadconnectorhq.com/opportunities/', {
           method: 'POST',
@@ -144,7 +132,24 @@ export default async function handler(req, res) {
         });
       } catch (oppError) {
         console.error('Opportunity creation error:', oppError);
-        // Don't fail the registration if opportunity creation fails
+      }
+
+      // Fire webhook to trigger the registration workflow
+      try {
+        await fetch('https://services.leadconnectorhq.com/hooks/ZTzlr9OKa82mgQ8vn680/webhook-trigger/SkIqx9xq4o01ZHbakdfu', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contactId: contactId,
+            email: email,
+            phone: phone,
+            firstName: firstName || '',
+            lastName: lastName || '',
+            webinarDate: webinarDate || '',
+          }),
+        });
+      } catch (webhookError) {
+        console.error('Webhook trigger error:', webhookError);
       }
     }
 
