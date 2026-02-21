@@ -63,6 +63,8 @@ export default async function handler(req, res) {
     const result = await ghlResponse.json();
 
     // Handle response
+    let contactId = null;
+
     if (!ghlResponse.ok) {
       console.error('GHL API Error:', result);
 
@@ -74,11 +76,11 @@ export default async function handler(req, res) {
 
       if (isDuplicate) {
         // Get contact ID from the duplicate error response
-        const existingContactId = result.meta?.contactId;
+        contactId = result.meta?.contactId;
 
-        if (existingContactId) {
+        if (contactId) {
           // Update existing contact with new tags and custom field
-          await fetch(`https://services.leadconnectorhq.com/contacts/${existingContactId}`, {
+          await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}`, {
             method: 'PUT',
             headers: {
               'Authorization': `Bearer ${process.env.GHL_API_KEY}`,
@@ -98,24 +100,45 @@ export default async function handler(req, res) {
             }),
           });
         }
-
-        return res.status(200).json({
-          success: true,
-          message: 'Registration successful',
-          contactId: existingContactId || 'existing',
+      } else {
+        return res.status(ghlResponse.status).json({
+          error: 'Failed to create contact',
+          details: result,
         });
       }
+    } else {
+      contactId = result.contact?.id;
+    }
 
-      return res.status(ghlResponse.status).json({
-        error: 'Failed to create contact',
-        details: result,
-      });
+    // Create Opportunity in the Masterclass Webinar pipeline
+    if (contactId) {
+      try {
+        await fetch('https://services.leadconnectorhq.com/opportunities/', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.GHL_API_KEY}`,
+            'Content-Type': 'application/json',
+            'Version': '2021-07-28',
+          },
+          body: JSON.stringify({
+            pipelineId: 'pbm5k2tzDR68IEz90X9N',
+            locationId: process.env.GHL_LOCATION_ID,
+            name: `Masterclass - ${webinarDate || 'Unknown Date'}`,
+            pipelineStageId: '8007c5d6-1647-4b38-a233-622b1332954d',
+            status: 'open',
+            contactId: contactId,
+          }),
+        });
+      } catch (oppError) {
+        console.error('Opportunity creation error:', oppError);
+        // Don't fail the registration if opportunity creation fails
+      }
     }
 
     return res.status(200).json({
       success: true,
       message: 'Registration successful',
-      contactId: result.contact?.id,
+      contactId: contactId || 'existing',
     });
 
   } catch (error) {
