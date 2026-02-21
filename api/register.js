@@ -134,6 +134,9 @@ export default async function handler(req, res) {
         console.error('Opportunity creation error:', oppError);
       }
 
+      // Wait for GHL to process the contact/opportunity before triggering workflow
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
       // Fire webhook to trigger the registration workflow
       try {
         await fetch('https://services.leadconnectorhq.com/hooks/ZTzlr9OKa82mgQ8vn680/webhook-trigger/SkIqx9xq4o01ZHbakdfu', {
