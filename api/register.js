@@ -1,5 +1,5 @@
 // Vercel Serverless Function for Webinar Masterclass Registration
-// Creates/updates contact in GHL with mastermind-webinar tag
+// Creates/updates contact in GHL with tags and creates pipeline opportunity
 
 export default async function handler(req, res) {
   // CORS headers
@@ -29,11 +29,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Phone is required' });
     }
 
+    // Determine date-specific tag from the selected date
+    let dateTag = '';
+    if (webinarDate && webinarDate.includes('23')) dateTag = 'masterclass 0226 - feb 23';
+    else if (webinarDate && webinarDate.includes('25')) dateTag = 'masterclass 0226 - feb 25';
+    else if (webinarDate && webinarDate.includes('26')) dateTag = 'masterclass 0226 - feb 26';
+
     // Tags for Masterclass 0226 registrants
     const tags = [
-      'Masterclass 0226 - Registered',  // Triggers Workflow 1
-      'sms-consent'
+      'Masterclass 0226 - Registered',
+      'sms-consent',
     ];
+    if (dateTag) tags.push(dateTag);
 
     // Create/update contact in GHL
     const ghlResponse = await fetch('https://services.leadconnectorhq.com/contacts/', {
@@ -79,7 +86,20 @@ export default async function handler(req, res) {
         contactId = result.meta?.contactId;
 
         if (contactId) {
-          // Update existing contact with new date
+          // For duplicates: remove the date tag first so re-adding triggers the workflow
+          if (dateTag) {
+            await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}/tags`, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer ${process.env.GHL_API_KEY}`,
+                'Content-Type': 'application/json',
+                'Version': '2021-07-28',
+              },
+              body: JSON.stringify({ tags: [dateTag] }),
+            });
+          }
+
+          // Update existing contact with new date and re-add tags
           await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}`, {
             method: 'PUT',
             headers: {
@@ -110,9 +130,8 @@ export default async function handler(req, res) {
       contactId = result.contact?.id;
     }
 
-    // Create Opportunity and trigger workflow webhook
+    // Create Opportunity in the Masterclass Webinar pipeline
     if (contactId) {
-      // Create Opportunity in the Masterclass Webinar pipeline
       try {
         await fetch('https://services.leadconnectorhq.com/opportunities/', {
           method: 'POST',
@@ -132,27 +151,6 @@ export default async function handler(req, res) {
         });
       } catch (oppError) {
         console.error('Opportunity creation error:', oppError);
-      }
-
-      // Wait for GHL to process the contact/opportunity before triggering workflow
-      await new Promise(resolve => setTimeout(resolve, 3000));
-
-      // Fire webhook to trigger the registration workflow
-      try {
-        await fetch('https://services.leadconnectorhq.com/hooks/ZTzlr9OKa82mgQ8vn680/webhook-trigger/SkIqx9xq4o01ZHbakdfu', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contactId: contactId,
-            email: email,
-            phone: phone,
-            firstName: firstName || '',
-            lastName: lastName || '',
-            webinarDate: webinarDate || '',
-          }),
-        });
-      } catch (webhookError) {
-        console.error('Webhook trigger error:', webhookError);
       }
     }
 
