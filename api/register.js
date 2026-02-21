@@ -99,7 +99,7 @@ export default async function handler(req, res) {
             });
           }
 
-          // Update existing contact with new date and re-add tags
+          // Update existing contact with new date (no tags here - PUT replaces them)
           await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}`, {
             method: 'PUT',
             headers: {
@@ -108,7 +108,6 @@ export default async function handler(req, res) {
               'Version': '2021-07-28',
             },
             body: JSON.stringify({
-              tags: tags,
               firstName: firstName || undefined,
               lastName: lastName || undefined,
               customFields: [
@@ -118,6 +117,17 @@ export default async function handler(req, res) {
                 }
               ],
             }),
+          });
+
+          // Add tags separately so existing tags are preserved
+          await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}/tags`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.GHL_API_KEY}`,
+              'Content-Type': 'application/json',
+              'Version': '2021-07-28',
+            },
+            body: JSON.stringify({ tags: tags }),
           });
         }
       } else {
