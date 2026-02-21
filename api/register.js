@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         source: 'Masterclass 0226 Registration',
         customFields: [
           {
-            key: 'masterclass_0226__date',
+            key: 'masterclass__date',
             field_value: webinarDate || ''
           }
         ],
@@ -93,7 +93,7 @@ export default async function handler(req, res) {
               lastName: lastName || undefined,
               customFields: [
                 {
-                  key: 'masterclass_0226__date',
+                  key: 'masterclass__date',
                   field_value: webinarDate || ''
                 }
               ],
