@@ -79,7 +79,20 @@ export default async function handler(req, res) {
         contactId = result.meta?.contactId;
 
         if (contactId) {
-          // Update existing contact with new tags and custom field
+          // Remove the registration tag first so re-adding it triggers the workflow
+          await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}/tags`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${process.env.GHL_API_KEY}`,
+              'Content-Type': 'application/json',
+              'Version': '2021-07-28',
+            },
+            body: JSON.stringify({
+              tags: ['Masterclass 0226 - Registered'],
+            }),
+          });
+
+          // Update existing contact with new date, then re-add tags to trigger workflow
           await fetch(`https://services.leadconnectorhq.com/contacts/${contactId}`, {
             method: 'PUT',
             headers: {
